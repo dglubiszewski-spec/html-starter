@@ -127,11 +127,15 @@
         if(document.getElementById('wyniki').innerHTML !== "") herbarzStart();
     }
 
-    async function herbarzStart() {
-        const nIn = document.getElementById('szukaj').value.trim().toLowerCase();
+        async function herbarzStart() {
+        // Ta linia czyści wpisane nazwisko (małe litery, usuwa polskie ogonki)
+        const nRaw = document.getElementById('szukaj').value.trim();
+        const nInput = nRaw.toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/g, "l");
+        
         const res = document.getElementById('wyniki');
         const l = bazy[aktL] || bazy['pl'];
-        if(!nIn) return;
+        if(!nInput) return;
 
         res.innerHTML = `<em>${l.m}</em>`;
 
@@ -139,17 +143,20 @@
             const response = await fetch('herbarz.json');
             if (!response.ok) throw new Error();
             const dane = await response.json();
-            const wpis = dane[nIn];
+            
+            // Szukamy w bazie wyczyszczonego nazwiska
+            const wpis = dane[nInput];
             
             if(wpis) { 
                 pobierzZWikipedii(wpis.h, wpis.i); 
             } else { 
-                res.innerHTML = `${nIn.toUpperCase()} - ${l.e}`; 
+                res.innerHTML = nRaw.toUpperCase() + " - " + l.e; 
             }
         } catch (e) {
             res.innerHTML = l.e; 
         }
     }
+
 
     async function pobierzZWikipedii(f, info) {
         const res = document.getElementById('wyniki'); 
