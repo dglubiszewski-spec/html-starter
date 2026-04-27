@@ -75,26 +75,26 @@
         "mickiewicz": { herb: "Poraj", info: "Herbarz Polski Kaspra Niesieckiego" }
     };
 
-        // 1. KOMPLETNA TABLICA TŁUMACZEŃ (13 JĘZYKÓW)
+            // 1. KOMPLETNA TABLICA TŁUMACZEŃ (13 JĘZYKÓW)
     const bazy = {
-        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Szukanie...', r:'Zidentyfikowano herb: ', z:'Źródło: ', e:'Nie znaleziono nazwiska.'},
-        'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search', m:'Searching...', r:'Identified coat of arms: ', z:'Source: ', e:'Surname not found.'},
-        'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche', m:'Suche...', r:'Wappen identifiziert: ', z:'Quelle: ', e:'Nicht gefunden.'},
-        'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom...', b:'Chercher', m:'Recherche...', r:'Blason identifié : ', z:'Source : ', e:'Pas trouvé.'},
-        'es': {t:'ARMORIAL', s:'Genealogía de familias nobles', p:'Apellido...', b:'Buscar', m:'Buscando...', r:'Escudo identificado: ', z:'Fuente: ', e:'No encontrado.'},
-        'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar', m:'Procurando...', r:'Brasão identificado: ', z:'Fonte: ', e:'Não encontrado.'},
-        'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca', m:'Ricerca...', r:'Stemma identificato: ', n:'Nessuna immagine.', z:'Fonte: ', e:'Non trovato.'},
-        'se': {t:'VAPENBOK', s:'Släktforskning för adelsfamiljer', p:'Efternamn...', b:'Sök', m:'Söker...', r:'Identifierat vapen: ', z:'Källa: ', e:'Hittades inte.'},
-        'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Sök', m:'Søker...', r:'Identifisert våpen: ', z:'Kilde: ', e:'Ikke funnet.'},
-        'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפחה...', b:'חיפוש', m:'מחפש...', r:'זוהה שלט אצולה: ', z:'מקור: ', e:'לא נמצא.'},
-        'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث', m:'بحث...', r:'تم تحديد الشعار: ', z:'مصدر: ', e:'لم يتم العثor.'},
-        'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara', m:'Aranıyor...', r:'Arma tanımlandı: ', z:'Kaynak: ', e:'Bulunamadı.'},
-        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Прізвище...', b:'Пошук', m:'Пошук...', r:'Ідентифіковано герб: ', z:'Джерело: ', e:'Не знайдено.'}
+        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Szukanie...', r:'Herb: ', z:'Źródło: ', e:'Nie znaleziono.'},
+        'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search', m:'Searching...', r:'Coat of arms: ', z:'Source: ', e:'Not found.'},
+        'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche', m:'Suche...', r:'Wappen: ', z:'Quelle: ', e:'Nicht gefunden.'},
+        'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom...', b:'Chercher', m:'Recherche...', r:'Blason : ', z:'Source : ', e:'Pas trouvé.'},
+        'es': {t:'ARMORIAL', s:'Genealogía de familias nobles', p:'Apellido...', b:'Buscar', m:'Buscando...', r:'Escudo: ', z:'Fuente: ', e:'No encontrado.'},
+        'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar', m:'Procurando...', r:'Brasão: ', z:'Fonte: ', e:'Nie znaleziono.'},
+        'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca', m:'Ricerca...', r:'Stemma: ', z:'Fonte: ', e:'Non trovato.'},
+        'se': {t:'VAPENBOK', s:'Släktforskning för adelsfamiljer', p:'Efternamn...', b:'Sök', m:'Söker...', r:'Vapen: ', z:'Källa: ', e:'Hittades inte.'},
+        'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Sök', m:'Søker...', r:'Våpen: ', z:'Kilde: ', e:'Ikke funnet.'},
+        'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפחה...', b:'חיפוש', m:'מחפש...', r:'שלט אצולה: ', z:'מקור: ', e:'לא נמצא.'},
+        'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث', m:'بحث...', r:'شعار: ', z:'مصدر: ', e:'لم يتم العثور.'},
+        'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara', m:'Aranıyor...', r:'Arma: ', z:'Kaynak: ', e:'Bulunamadı.'},
+        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Прізвище...', b:'Пошук', m:'Пошук...', r:'Герб: ', z:'Джерело: ', e:'Не знайдено.'}
     };
 
     let aktL = 'pl';
 
-    // 2. FUNKCJA ZMIANY JĘZYKA (Aktualizuje wszystko na żywo)
+    // 2. FUNKCJA ZMIANY JĘZYKA (Odświeża też wynik na dole)
     function zmien(k) { 
         aktL = k; 
         const l = bazy[k] || bazy['pl'];
@@ -102,10 +102,14 @@
         document.getElementById('s').innerText = l.s;
         document.getElementById('szukaj').placeholder = l.p; 
         document.getElementById('btn-szukaj').innerText = l.b; 
-        document.getElementById('wyniki').innerHTML = ""; 
+        
+        // Jeśli na ekranie jest już wynik, odśwież go natychmiast w nowym języku
+        if(document.getElementById('szukaj').value.trim() !== "") {
+            herbarzStart();
+        }
     }
 
-    // 3. LOGIKA WYSZUKIWANIA
+    // 3. LOGIKA WYSZUKIWANIA I POWIĄZAŃ (Wydawnictwo DiG)
     const polskiHerbarz = {
         "lubiszewski": { herb: "Wieniawa", info: "Szlachta wylegitymowana w Królestwie Polskim (Wydawnictwo DiG)" },
         "mickiewicz": { herb: "Poraj", info: "Herbarz Polski Kaspra Niesieckiego" }
@@ -126,11 +130,11 @@
         if(wpis) { 
             pobierzZWikipedii(wpis.herb, wpis.info); 
         } else { 
-            res.innerHTML = `${l.e} (${nInput.toUpperCase()})`; 
+            res.innerHTML = `${nInput.toUpperCase()} - ${l.e}`; 
         }
     }
 
-    // 4. POBIERANIE OBRAZKA I TŁUMACZENIE WYNIKÓW
+    // 4. WYŚWIETLANIE WYNIKÓW (Tłumaczy "Herb" i "Źródło")
     async function pobierzZWikipedii(f, info) {
         const res = document.getElementById('wyniki'); 
         const l = bazy[aktL] || bazy['pl'];
@@ -143,22 +147,16 @@
             const p = d.query.pages; 
             const id = Object.keys(p);
             
+            let zawartosc = `<h3>${l.r}${nazwa}</h3>`;
             if (id !== "-1" && p[id].thumbnail) {
-                res.innerHTML = `
-                    <div class="herb-item">
-                        <h3>${l.r}${nazwa}</h3>
-                        <img src="${p[id].thumbnail.source}">
-                        <div class="source-info">${l.z} ${info}</div>
-                    </div>`;
-            } else {
-                res.innerHTML = `${l.r}${nazwa}<br><div class="source-info">${l.z} ${info}</div>`;
+                zawartosc += `<img src="${p[id].thumbnail.source}" class="herb-img">`;
             }
+            zawartosc += `<div class="source-info">${l.z}${info}</div>`;
+            res.innerHTML = zawartosc;
         } catch (e) { 
             res.innerHTML = "Błąd archiwum."; 
         }
     }
-
 </script>
 </body>
 </html>
-
