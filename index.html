@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Herbarz Szlachecki - herbarz.com</title>
     <style>
-        /* STYLIZACJA KARTY */
         body { background-color: #b59a6d; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Georgia', serif; }
         .karta { 
             background-color: #f3e5ab; padding: 50px; border: 2px solid #4a3728; 
@@ -14,23 +13,15 @@
         }
         h1 { color: #4a3728; font-size: 60px; margin: 0; letter-spacing: 4px; font-weight: bold; }
         .subtitle { font-style: italic; color: #4a3728; margin: 10px 0 30px 0; border-top: 1px solid #4a3728; display: inline-block; padding-top: 5px; font-size: 18px; }
-        
-        /* PRZYCISKI JĘZYKOWE */
         .lang-wrapper { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 35px; }
         .lang-btn { font-size: 30px; cursor: pointer; background: none; border: 1px solid rgba(74, 55, 40, 0.2); padding: 5px; border-radius: 4px; transition: 0.2s; line-height: 1; outline: none; }
         .lang-btn:hover { transform: scale(1.25); background: rgba(74, 55, 40, 0.1); border-color: #4a3728; }
-        
-        /* WYSZUKIWARKA */
         .search-area { display: flex; justify-content: center; }
         #szukaj { padding: 15px; width: 350px; border: 2px solid #4a3728; background: #fffef0; font-size: 18px; outline: none; border-radius: 4px 0 0 4px; }
         #btn-szukaj { padding: 15px 30px; background: #4a3728; color: white; border: none; cursor: pointer; font-size: 18px; font-weight: bold; border-radius: 0 4px 4px 0; transition: 0.3s; }
         #btn-szukaj:hover { background: #634a36; }
-        
-        /* WYNIKI */
         #wyniki { margin-top: 30px; color: #4a3728; min-height: 120px; font-weight: bold; font-size: 20px; }
-        .herb-item { animation: fadeIn 0.8s; }
         .herb-item img { max-width: 280px; border: 4px double #4a3728; background: white; padding: 15px; margin-top: 15px; box-shadow: 10px 10px 20px rgba(0,0,0,0.2); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -64,92 +55,57 @@
 </div>
 
 <script>
-    // BAZA NAZWISKO -> HERB
-    const polskiHerbarz = {
-        "lubiszewski": "Wieniawa",
-        "mickiewicz": "Poraj",
-        "poniatowski": "Ciołek",
-        "czartoryski": "Pogoń Litewska",
-        "potocki": "Pilawa",
-        "sapieha": "Lis",
-        "skłodowski": "Dołęga",
-        "wieniawa": "Wieniawa"
-    };
+    const polskiHerbarz = { "lubiszewski": "Wieniawa", "mickiewicz": "Poraj", "poniatowski": "Ciołek", "wieniawa": "Wieniawa" };
 
-    // KOMPLETNA BAZA TŁUMACZEŃ (13 JĘZYKÓW)
     const bazy = {
-        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Szukanie w herbarzach...', n:'Nie znaleziono nazwiska.'},
-        'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search', m:'Searching archives...', n:'Surname not found.'},
-        'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche', m:'Suche in Wappenrollen...', n:'Wappen nie gefunden.'},
-        'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom de famille...', b:'Chercher', m:'Recherche...', n:'Pas trouvé.'},
-        'es': {t:'ARMORIAL', s:'Genealogía de familias nobles', p:'Apellido...', b:'Buscar', m:'Buscando...', n:'No encontrado.'},
-        'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar', m:'Procurando...', n:'Não encontrado.'},
-        'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca', m:'Ricerca...', n:'Non trovato.'},
-        'se': {t:'VAPENBOK', s:'Släktforskning för adelsfamiljer', p:'Efternamn...', b:'Sök', m:'Söker...', n:'Hittades inte.'},
-        'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Sök', m:'Söker...', n:'Ikke funnet.'},
-        'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפחה...', b:'חיפוש', m:'מחפש...', n:'לא נמצא.'},
-        'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث', m:'جارٍ البحث...', n:'لم يتم العثور.'},
-        'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara', m:'Aranıyor...', n:'Bulunamadı.'},
-        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Прізвище...', b:'Пошук', m:'Пошук у гербовниках...', n:'Не знайдено.'}
+        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Szukanie...', r:'Zidentyfikowano herb: ', n:'brak wizerunku w archiwum.'},
+        'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search', m:'Searching...', r:'Identified coat of arms: ', n:'no image in archive.'},
+        'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche', m:'Suche...', r:'Wappen identifiziert: ', n:'kein Bild im Archiv.'},
+        'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom...', b:'Chercher', m:'Recherche...', r:'Blason identifié : ', n:'pas d\'image.'},
+        'es': {t:'ARMORIAL', s:'Genealogía de familias nobles', p:'Apellido...', b:'Buscar', m:'Buscando...', r:'Escudo identificado: ', n:'sin imagen.'},
+        'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar', m:'Buscando...', r:'Brasão identificado: ', n:'sem imagem.'},
+        'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca', m:'Ricerca...', r:'Stemma identificato: ', n:'nessuna immagine.'},
+        'se': {t:'VAPENBOK', s:'Släktforskning för adelsfamiljer', p:'Efternamn...', b:'Sök', m:'Söker...', r:'Identifierat vapen: ', n:'ingen bild.'},
+        'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Søk', m:'Søker...', r:'Identifisert våpen: ', n:'intet bilde.'},
+        'he': {t:'סفر הרלדיקה', s:'גנאלוגia של משפחות אצולה', p:'שם משפחה...', b:'חיפוש', m:'מחפש...', r:'זוהה שלט אצולה: ', n:'אין תמונה.'},
+        'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث', m:'بحث...', r:'تم تحديد الشعار: ', n:'لا توجد صورة.'},
+        'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara', m:'Aranıyor...', r:'Arma tanımlandı: ', n:'görüntü yok.'},
+        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Прізвище...', b:'Пошук', m:'Пошук...', r:'Ідентифіковано герб: ', n:'немає зображення.'}
     };
 
     let aktL = 'pl';
     function zmien(k) { 
-        aktL = k; 
-        const l = bazy[k] || bazy['pl']; 
-        document.getElementById('t').innerText = l.t; 
-        document.getElementById('s').innerText = l.s; 
-        document.getElementById('szukaj').placeholder = l.p; 
-        document.getElementById('btn-szukaj').innerText = l.b; 
+        aktL = k; const l = bazy[k] || bazy['pl'];
+        document.getElementById('t').innerText = l.t; document.getElementById('s').innerText = l.s;
+        document.getElementById('szukaj').placeholder = l.p; document.getElementById('btn-szukaj').innerText = l.b;
     }
 
     function herbarzStart() {
-        const nInput = document.getElementById('szukaj').value.trim().toLowerCase();
+        const nIn = document.getElementById('szukaj').value.trim().toLowerCase();
         const res = document.getElementById('wyniki');
         const l = bazy[aktL] || bazy['pl'];
-        if(!nInput) return;
-
+        if(!nIn) return;
         res.innerHTML = `<em>${l.m}</em>`;
-        const nHerbu = polskiHerbarz[nInput] || nInput;
-        pobierzZWikipedii(nHerbu);
+        const nH = polskiHerbarz[nIn] || nIn;
+        pobierzZWikipedii(nH);
     }
 
     async function pobierzZWikipedii(f) {
-        const res = document.getElementById('wyniki');
+        const res = document.getElementById('wyniki'); const l = bazy[aktL] || bazy['pl'];
         const nazwa = f.charAt(0).toUpperCase() + f.slice(1);
-        
-        // SPRÓBUJEMY 3 RÓŻNYCH ŚCIEŻEK DO OBRAZKA
-        const terminy = [`Herb_${nazwa}`, `${nazwa}_(herb_szlachecki)`, `POL_COA_${nazwa}`];
+        const terminy = [`Herb_${nazwa}`, `${nazwa}_(herb_szlachecki)`, `POL_COA_${nazwa}`, nazwa];
 
         for (let t of terminy) {
-            const api = `https://wikipedia.org{t}&prop=pageimages|imageinfo&iiprop=url&iiurlwidth=500&format=json&pithumbsize=500&origin=*`;
+            const api = `https://wikipedia.org{t}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
             try {
-                const r = await fetch(api);
-                const d = await r.json();
-                const p = d.query.pages;
-                const id = Object.keys(p);
-                
+                const r = await fetch(api); const d = await r.json(); const p = d.query.pages; const id = Object.keys(p);
                 if (id !== "-1" && p[id].thumbnail) {
-                    res.innerHTML = `<div class="herb-item"><h3>Herb ${nazwa}</h3><img src="${p[id].thumbnail.source}"></div>`;
+                    res.innerHTML = `<div class="herb-item"><h3>${l.r}${nazwa}</h3><img src="${p[id].thumbnail.source}"></div>`;
                     return;
                 }
-            } catch (e) { }
+            } catch (e) {}
         }
-
-        // DODATKOWO SZUKAMY W COMMONS (BEZPOŚREDNIO PLIK)
-        try {
-            const commonsApi = `https://wikimedia.org{nazwa}.svg&prop=imageinfo&iiprop=url&iiurlwidth=500&format=json&origin=*`;
-            const r2 = await fetch(commonsApi);
-            const d2 = await r2.json();
-            const p2 = d2.query.pages;
-            const id2 = Object.keys(p2);
-            if (id2 !== "-1" && p2[id2].imageinfo) {
-                res.innerHTML = `<div class="herb-item"><h3>Herb ${nazwa}</h3><img src="${p2[id2].imageinfo[0].thumburl}"></div>`;
-                return;
-            }
-        } catch (e) { }
-
-        res.innerHTML = `Zidentyfikowano herb: ${nazwa}, ale baza grafik Wikipedii nie odpowiada. Spróbuj za chwilę.`;
+        res.innerHTML = `${l.r}${nazwa}, ${l.n}`;
     }
 </script>
 </body>
