@@ -2,89 +2,31 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Herbarz Szlachecki - herbarz.com</title>
     <style>
-        body { 
-            background-color: #b59a6d; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            font-family: 'Times New Roman', serif; 
-        }
-        
-        /* Styl karty - przywrócenie wyglądu ze zdjęcia */
+        body { background-color: #b59a6d; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: serif; }
         .karta {
             background-color: #f3e5ab;
-            padding: 40px;
+            padding: 50px;
             border: 2px solid #4a3728;
-            box-shadow: 15px 15px 30px rgba(0,0,0,0.4);
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.3);
             text-align: center;
-            max-width: 800px;
-            width: 90%;
+            min-width: 600px;
             position: relative;
-            border-radius: 5px;
         }
+        h1 { color: #4a3728; font-size: 60px; margin: 0; }
+        .subtitle { font-style: italic; color: #4a3728; margin-bottom: 30px; border-bottom: 1px solid #4a3728; display: inline-block; }
+        
+        .lang-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
+        .lang-buttons img { width: 40px; cursor: pointer; border: 1px solid #ccc; transition: 0.2s; }
+        .lang-buttons img:hover { transform: scale(1.2); }
 
-        h1 { color: #4a3728; font-size: 55px; margin: 0; letter-spacing: 5px; }
-        .subtitle { font-style: italic; color: #4a3728; margin: 10px 0 30px 0; border-top: 1px solid #4a3728; display: inline-block; padding-top: 5px; }
+        .search-box { display: flex; justify-content: center; }
+        #szukaj { padding: 15px; width: 300px; border: 2px solid #4a3728; font-size: 18px; }
+        #btn { padding: 15px 30px; background: #4a3728; color: white; border: none; cursor: pointer; font-weight: bold; }
 
-        /* Przyciski językowe - 13 flag, swobodny układ */
-        .lang-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        .lang-container img {
-            width: 35px;
-            height: auto;
-            cursor: pointer;
-            border: 1px solid #888;
-            transition: transform 0.2s;
-            border-radius: 2px;
-        }
-
-        .lang-container img:hover {
-            transform: scale(1.2);
-            border-color: #4a3728;
-        }
-
-        /* Wyszukiwarka */
-        .search-box {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        #szukaj {
-            padding: 12px;
-            width: 300px;
-            border: 2px solid #4a3728;
-            border-right: none;
-            font-size: 16px;
-            outline: none;
-        }
-
-        #przyciskSzukaj {
-            padding: 12px 25px;
-            background-color: #4a3728;
-            color: white;
-            border: 2px solid #4a3728;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        #przyciskSzukaj:hover { background-color: #634a36; }
-
-        /* Miejsce na herby */
-        #wyniki { margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
-        .herb-img { width: 120px; border: 1px solid #4a3728; padding: 5px; background: white; }
+        #wyniki { margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
+        .herb-container img { max-width: 200px; border: 1px solid #4a3728; background: white; padding: 10px; }
     </style>
 </head>
 <body>
@@ -93,55 +35,60 @@
     <h1>HERBARZ</h1>
     <div class="subtitle">Księgi i Genealogia Rodów Szlacheckich</div>
 
-    <div class="lang-container">
-        <!-- 13 flag: PL, EN, DE, FR, ES, PT, IT, SE, NO, HE, AR, TR, UA (zamiast RU) -->
-        <img src="https://flagcdn.com" onclick="zmienJezyk('pl')" title="Polski">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('en')" title="English">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('de')" title="Deutsch">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('fr')" title="Français">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('es')" title="Español">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('pt')" title="Português">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('it')" title="Italiano">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('se')" title="Svenska">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('no')" title="Norsk">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('he')" title="עברית">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('ar')" title="العربية">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('tr')" title="Türkçe">
-        <img src="https://flagcdn.com" onclick="zmienJezyk('ua')" title="Українська">
+    <div class="lang-buttons">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('pl')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('en')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('de')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('fr')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('es')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('pt')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('it')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('se')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('no')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('he')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('ar')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('tr')">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('ua')">
     </div>
 
     <div class="search-box">
         <input id="szukaj" type="text" placeholder="Wpisz nazwisko...">
-        <button id="przyciskSzukaj" onclick="wykonajSzukanie()">Szukaj</button>
+        <button id="btn" onclick="pobierzHerb()">Szukaj</button>
     </div>
 
-    <div id="wyniki">
-        <!-- Tu pojawią się herby po wyszukaniu -->
-    </div>
+    <div id="wyniki"></div>
 </div>
 
 <script>
-    // System tłumaczeń - przeładowuje stronę z nowym językiem
     function zmienJezyk(kod) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('lang', kod);
-        window.location.href = url.toString();
+        window.location.search = "?lang=" + kod;
     }
 
-    // Funkcja szukania - upewnij się, że Twoje obrazki są w folderze 'img/'
-    function wykonajSzukanie() {
+    async function pobierzHerb() {
         const nazwisko = document.getElementById('szukaj').value;
-        if(nazwisko) {
-            // Przykładowe wstawienie herbu - zmień ścieżkę na swoją!
-            document.getElementById('wyniki').innerHTML = `
-                <div>
-                    <img src="img/${nazwisko.toLowerCase()}.jpg" class="herb-img" onerror="this.src='https://placeholder.com'">
-                    <p>${nazwisko}</p>
-                </div>`;
+        const kontener = document.getElementById('wyniki');
+        kontener.innerHTML = "Szukam...";
+
+        // API Wikipedii do szukania obrazka herbu
+        const api = `https://wikipedia.org{nazwisko}&prop=pageimages&format=json&pithumbsize=400&origin=*`;
+
+        try {
+            const res = await fetch(api);
+            const data = await res.json();
+            const pages = data.query.pages;
+            const pageId = Object.keys(pages)[0];
+
+            if (pageId !== "-1" && pages[pageId].thumbnail) {
+                const imgUrl = pages[pageId].thumbnail.source;
+                kontener.innerHTML = `<div class="herb-container"><h3>Herb ${nazwisko}</h3><img src="${imgUrl}"></div>`;
+            } else {
+                kontener.innerHTML = "Nie znaleziono herbu dla tego nazwiska.";
+            }
+        } catch (e) {
+            kontener.innerHTML = "Błąd połączenia z bazą herbów.";
         }
     }
 </script>
 
 </body>
 </html>
-
