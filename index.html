@@ -4,105 +4,123 @@
     <meta charset="UTF-8">
     <title>Herbarz Szlachecki - herbarz.com</title>
     <style>
-        body { background-color: #b59a6d; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: 'Times New Roman', serif; }
-        .karta {
-            background-color: #f3e5ab;
-            padding: 40px;
-            border: 2px solid #4a3728;
-            box-shadow: 10px 10px 20px rgba(0,0,0,0.3);
-            text-align: center;
-            width: 700px;
+        /* Pełna stylizacja tła i karty */
+        body { background-color: #b59a6d; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Georgia', serif; }
+        .karta { 
+            background-color: #f3e5ab; 
+            padding: 60px; 
+            border: 2px solid #4a3728; 
+            box-shadow: 20px 20px 40px rgba(0,0,0,0.5); 
+            text-align: center; 
+            width: 750px; 
             position: relative;
         }
-        h1 { color: #4a3728; font-size: 60px; margin: 0; font-weight: bold; }
-        .subtitle { font-style: italic; color: #4a3728; margin-bottom: 25px; border-top: 1px solid #4a3728; display: inline-block; padding-top: 5px; }
-        
-        /* Swobodne układanie flag jako EMOJI - nie znikną! */
-        .lang-buttons { 
-            display: flex; 
-            justify-content: center; 
-            gap: 12px; 
-            flex-wrap: wrap; 
-            margin-bottom: 20px; 
-        }
-        .lang-buttons span { 
-            font-size: 30px; 
+        h1 { color: #4a3728; font-size: 65px; margin: 0; text-transform: uppercase; letter-spacing: 4px; }
+        .subtitle { font-style: italic; color: #4a3728; margin: 10px 0 40px 0; border-top: 1px solid #4a3728; display: inline-block; padding-top: 10px; font-size: 20px; }
+
+        /* Flagi jako emoji - to jedyny sposób, żeby zawsze działały bez zewnętrznych plików */
+        .lang-wrapper { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 35px; }
+        .lang-item { 
+            font-size: 32px; 
             cursor: pointer; 
-            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2));
-            transition: transform 0.2s;
+            transition: transform 0.2s, filter 0.2s; 
+            user-select: none;
         }
-        .lang-buttons span:hover { transform: scale(1.3); }
+        .lang-item:hover { transform: scale(1.3); filter: drop-shadow(0 0 5px rgba(0,0,0,0.3)); }
 
-        .search-container { display: flex; justify-content: center; }
-        #szukaj { padding: 12px; width: 350px; border: 2px solid #4a3728; font-size: 18px; outline: none; }
-        #przycisk { padding: 12px 25px; background: #4a3728; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; }
+        /* Wyszukiwarka */
+        .search-area { display: flex; justify-content: center; margin-top: 10px; }
+        #szukaj { 
+            padding: 15px; width: 380px; border: 2px solid #4a3728; background: #fffef0; font-size: 18px; outline: none;
+        }
+        #btn-szukaj { 
+            padding: 15px 35px; background: #4a3728; color: white; border: none; cursor: pointer; font-size: 18px; font-weight: bold;
+        }
+        #btn-szukaj:hover { background: #634a36; }
 
-        #wyniki { margin-top: 30px; color: #4a3728; font-weight: bold; }
-        .herb-box img { max-width: 180px; border: 1px solid #4a3728; background: white; padding: 10px; margin-top: 10px; }
+        /* Sekcja wyników */
+        #wyniki { margin-top: 40px; min-height: 200px; color: #4a3728; }
+        .herb-display { animation: fadeIn 0.5s; }
+        .herb-display img { max-width: 250px; border: 3px double #4a3728; background: #fff; padding: 15px; box-shadow: 5px 5px 15px rgba(0,0,0,0.2); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="karta">
-    <h1>HERBARZ</h1>
-    <div class="subtitle">Księgi i Genealogia Rodów Szlacheckich</div>
+    <h1 id="main-title">HERBARZ</h1>
+    <div class="subtitle" id="main-sub">Księgi i Genealogia Rodów Szlacheckich</div>
 
-    <div class="lang-buttons">
-        <!-- Używamy emoji - są niezawodne i nie wymagają obrazków -->
-        <span onclick="zmienJezyk('pl')" title="Polski">🇵🇱</span>
-        <span onclick="zmienJezyk('en')" title="English">🇬🇧</span>
-        <span onclick="zmienJezyk('de')" title="Deutsch">🇩🇪</span>
-        <span onclick="zmienJezyk('fr')" title="Français">🇫🇷</span>
-        <span onclick="zmienJezyk('es')" title="Español">🇪🇸</span>
-        <span onclick="zmienJezyk('pt')" title="Português">🇵🇹</span>
-        <span onclick="zmienJezyk('it')" title="Italiano">🇮🇹</span>
-        <span onclick="zmienJezyk('se')" title="Svenska">🇸🇪</span>
-        <span onclick="zmienJezyk('no')" title="Norsk">🇳🇴</span>
-        <span onclick="zmienJezyk('he')" title="עברית">🇮🇱</span>
-        <span onclick="zmienJezyk('sa')" title="العربية">🇸🇦</span>
-        <span onclick="zmienJezyk('tr')" title="Türkçe">🇹🇷</span>
-        <span onclick="zmienJezyk('ua')" title="Українська">🇺🇦</span>
+    <div class="lang-wrapper">
+        <span class="lang-item" onclick="zmienJezyk('pl')" title="Polski">🇵🇱</span>
+        <span class="lang-item" onclick="zmienJezyk('en')" title="English">🇬🇧</span>
+        <span class="lang-item" onclick="zmienJezyk('de')" title="Deutsch">🇩🇪</span>
+        <span class="lang-item" onclick="zmienJezyk('fr')" title="Français">🇫🇷</span>
+        <span class="lang-item" onclick="zmienJezyk('es')" title="Español">🇪🇸</span>
+        <span class="lang-item" onclick="zmienJezyk('pt')" title="Português">🇵🇹</span>
+        <span class="lang-item" onclick="zmienJezyk('it')" title="Italiano">🇮🇹</span>
+        <span class="lang-item" onclick="zmienJezyk('se')" title="Svenska">🇸🇪</span>
+        <span class="lang-item" onclick="zmienJezyk('no')" title="Norsk">🇳🇴</span>
+        <span class="lang-item" onclick="zmienJezyk('he')" title="עברית">🇮🇱</span>
+        <span class="lang-item" onclick="zmienJezyk('sa')" title="العربية">🇸🇦</span>
+        <span class="lang-item" onclick="zmienJezyk('tr')" title="Türkçe">🇹🇷</span>
+        <span class="lang-item" onclick="zmienJezyk('ua')" title="Українська">🇺🇦</span>
     </div>
 
-    <div class="search-container">
-        <input id="szukaj" type="text" placeholder="Wpisz nazwisko...">
-        <button id="przycisk" onclick="pobierzHerb()">Szukaj</button>
+    <div class="search-area">
+        <input id="szukaj" type="text" placeholder="Wpisz nazwisko lub nazwę herbu...">
+        <button id="btn-szukaj" onclick="pobierzZasoby()">Szukaj</button>
     </div>
 
     <div id="wyniki"></div>
 </div>
 
 <script>
+    // System tłumaczeń - tablica danych
+    const tlumaczenia = {
+        'pl': { title: 'HERBARZ', sub: 'Księgi i Genealogia Rodów Szlacheckich', placeholder: 'Wpisz nazwisko...', btn: 'Szukaj' },
+        'en': { title: 'ARMORIAL', sub: 'Books and Genealogy of Noble Families', placeholder: 'Enter surname...', btn: 'Search' },
+        'de': { title: 'WAPPENROLLE', sub: 'Bücher und Genealogie von Adelsfamilien', placeholder: 'Nachname eingeben...', btn: 'Suche' },
+        'ua': { title: 'ГЕРБОВНИК', sub: 'Книги та генеалогія шляхetських roдів', placeholder: 'Введіть прізвище...', btn: 'Пошук' }
+        // Tutaj można dopisać resztę z 13 języków
+    };
+
     function zmienJezyk(kod) {
-        // To przełącza język "tak jak dawniej"
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('lang', kod);
-        window.location.href = currentUrl.toString();
+        const lang = tlumaczenia[kod] || tlumaczenia['en'];
+        document.getElementById('main-title').innerText = lang.title;
+        document.getElementById('main-sub').innerText = lang.sub;
+        document.getElementById('szukaj').placeholder = lang.placeholder;
+        document.getElementById('btn-szukaj').innerText = lang.btn;
+        
+        // Opcjonalnie: zapisuje wybór w URL
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', kod);
+        window.history.pushState({}, '', url);
     }
 
-    async function pobierzHerb() {
-        const nazwisko = document.getElementById('szukaj').value;
-        const res = document.getElementById('wyniki');
-        if (!nazwisko) return;
-        
-        res.innerHTML = "Szukam w archiwach...";
-        
-        // Pobieranie herbu z bazy Wikipedii
-        const api = `https://wikipedia.org{nazwisko}&prop=pageimages&format=json&pithumbsize=300&origin=*`;
+    async function pobierzZasoby() {
+        const query = document.getElementById('szukaj').value;
+        const resDiv = document.getElementById('wyniki');
+        if(!query) return;
 
+        resDiv.innerHTML = "<em>Przeszukiwanie starych ksiąg...</em>";
+
+        // Dynamiczne pobieranie herbu z Wikipedii (najbardziej niezawodne źródło)
         try {
+            const api = `https://wikipedia.org{query}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
             const response = await fetch(api);
             const data = await response.json();
             const pages = data.query.pages;
-            const id = Object.keys(pages)[0];
+            const pageId = Object.keys(pages)[0];
 
-            if (id !== "-1" && pages[id].thumbnail) {
-                res.innerHTML = `<div class="herb-box"><p>Herb ${nazwisko}</p><img src="${pages[id].thumbnail.source}"></div>`;
+            if (pageId !== "-1" && pages[pageId].thumbnail) {
+                const img = pages[pageId].thumbnail.source;
+                resDiv.innerHTML = `<div class="herb-display"><h3>Herb ${query}</h3><img src="${img}"></div>`;
             } else {
-                res.innerHTML = "Nie znaleziono obrazu herbu dla tego nazwiska.";
+                resDiv.innerHTML = "<p>Nie znaleziono herbu w tej księdze. Spróbuj innej nazwy.</p>";
             }
         } catch (e) {
-            res.innerHTML = "Błąd połączenia z bazą danych.";
+            resDiv.innerHTML = "<p>Błąd połączenia z archiwum.</p>";
         }
     }
 </script>
