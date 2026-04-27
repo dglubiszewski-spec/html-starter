@@ -5,25 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Herbarz Szlachecki - herbarz.com</title>
     <style>
-        body { 
-            background-color: #b59a6d; 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            font-family: 'Georgia', serif; 
-        }
-        .karta { 
-            background-color: #f3e5ab; 
-            padding: 50px; 
-            border: 2px solid #4a3728; 
-            box-shadow: 20px 20px 40px rgba(0,0,0,0.5); 
-            text-align: center; 
-            width: 750px; 
-            border-radius: 8px; 
-            position: relative;
-        }
+        body { background-color: #b59a6d; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Georgia', serif; }
+        .karta { background-color: #f3e5ab; padding: 50px; border: 2px solid #4a3728; box-shadow: 20px 20px 40px rgba(0,0,0,0.5); text-align: center; width: 750px; border-radius: 8px; position: relative; }
         h1 { color: #4a3728; font-size: 60px; margin: 0; letter-spacing: 4px; font-weight: bold; }
         .subtitle { font-style: italic; color: #4a3728; margin: 10px 0 30px 0; border-top: 1px solid #4a3728; display: inline-block; padding-top: 5px; font-size: 18px; }
         .lang-wrapper { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 35px; }
@@ -31,8 +14,7 @@
         .lang-btn:hover { transform: scale(1.25); background: rgba(74, 55, 40, 0.1); border-color: #4a3728; }
         .search-area { display: flex; justify-content: center; }
         #szukaj { padding: 15px; width: 350px; border: 2px solid #4a3728; background: #fffef0; font-size: 18px; outline: none; border-radius: 4px 0 0 4px; }
-        #btn-szukaj { padding: 15px 30px; background: #4a3728; color: white; border: none; cursor: pointer; font-size: 18px; font-weight: bold; border-radius: 0 4px 4px 0; transition: 0.3s; }
-        #btn-szukaj:hover { background: #634a36; }
+        #btn-szukaj { padding: 15px 30px; background: #4a3728; color: white; border: none; cursor: pointer; font-size: 18px; font-weight: bold; border-radius: 0 4px 4px 0; }
         #wyniki { margin-top: 30px; color: #4a3728; min-height: 120px; font-weight: bold; font-size: 20px; }
         .herb-item img { max-width: 250px; border: 4px double #4a3728; background: white; padding: 15px; margin: 15px 0; box-shadow: 10px 10px 20px rgba(0,0,0,0.2); }
         .source-info { font-size: 14px; font-weight: normal; margin-top: 20px; border-top: 1px dashed #4a3728; padding-top: 10px; color: #555; }
@@ -69,93 +51,61 @@
 </div>
 
 <script>
-    // Baza danych dla nazwiska
     const polskiHerbarz = {
-        "lubiszewski": { herb: "Wieniawa", info: "Szlachta wylegitymowana w Królestwie Polskim (Wydawnictwo DiG)" },
-        "mickiewicz": { herb: "Poraj", info: "Herbarz Polski Kaspra Niesieckiego" }
+        "lubiszewski": { h: "Wieniawa", i: "Szlachta wylegitymowana w Królestwie Polskim (Wydawnictwo DiG)" },
+        "mickiewicz": { h: "Poraj", i: "Herbarz Polski Kaspra Niesieckiego" }
     };
 
-            // 1. KOMPLETNA TABLICA TŁUMACZEŃ (13 JĘZYKÓW)
     const bazy = {
         'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Szukanie...', r:'Herb: ', z:'Źródło: ', e:'Nie znaleziono.'},
         'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search', m:'Searching...', r:'Coat of arms: ', z:'Source: ', e:'Not found.'},
         'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche', m:'Suche...', r:'Wappen: ', z:'Quelle: ', e:'Nicht gefunden.'},
-        'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom...', b:'Chercher', m:'Recherche...', r:'Blason : ', z:'Source : ', e:'Pas trouvé.'},
+        'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom...', b:'Chercher', m:'Recherche...', r:'Blason: ', z:'Source: ', e:'Pas trouvé.'},
         'es': {t:'ARMORIAL', s:'Genealogía de familias nobles', p:'Apellido...', b:'Buscar', m:'Buscando...', r:'Escudo: ', z:'Fuente: ', e:'No encontrado.'},
         'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar', m:'Procurando...', r:'Brasão: ', z:'Fonte: ', e:'Nie znaleziono.'},
         'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca', m:'Ricerca...', r:'Stemma: ', z:'Fonte: ', e:'Non trovato.'},
-        'se': {t:'VAPENBOK', s:'Släktforskning för adelsfamiljer', p:'Efternamn...', b:'Sök', m:'Söker...', r:'Vapen: ', z:'Källa: ', e:'Hittades inte.'},
+        'se': {t:'VAPENBOK', s:'Släktforskning dla adeln', p:'Efternamn...', b:'Sök', m:'Söker...', r:'Vapen: ', z:'Källa: ', e:'Hittades inte.'},
         'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Sök', m:'Søker...', r:'Våpen: ', z:'Kilde: ', e:'Ikke funnet.'},
         'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפחה...', b:'חיפוש', m:'מחפש...', r:'שלט אצולה: ', z:'מקור: ', e:'לא נמצא.'},
-        'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث', m:'بحث...', r:'شعار: ', z:'مصدر: ', e:'لم يتم العثور.'},
+        'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث', m:'بحث...', r:'شعار: ', z:'مصدر: ', e:'خطأ.'},
         'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara', m:'Aranıyor...', r:'Arma: ', z:'Kaynak: ', e:'Bulunamadı.'},
         'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Прізвище...', b:'Пошук', m:'Пошук...', r:'Герб: ', z:'Джерело: ', e:'Не знайдено.'}
     };
 
     let aktL = 'pl';
 
-    // 2. FUNKCJA ZMIANY JĘZYKA (Odświeża też wynik na dole)
     function zmien(k) { 
-        aktL = k; 
-        const l = bazy[k] || bazy['pl'];
-        document.getElementById('t').innerText = l.t; 
-        document.getElementById('s').innerText = l.s;
-        document.getElementById('szukaj').placeholder = l.p; 
-        document.getElementById('btn-szukaj').innerText = l.b; 
-        
-        // Jeśli na ekranie jest już wynik, odśwież go natychmiast w nowym języku
-        if(document.getElementById('szukaj').value.trim() !== "") {
-            herbarzStart();
-        }
+        aktL = k; const l = bazy[k] || bazy['pl'];
+        document.getElementById('t').innerText = l.t; document.getElementById('s').innerText = l.s;
+        document.getElementById('szukaj').placeholder = l.p; document.getElementById('btn-szukaj').innerText = l.b;
+        if(document.getElementById('wyniki').innerHTML !== "") herbarzStart();
     }
-
-    // 3. LOGIKA WYSZUKIWANIA I POWIĄZAŃ (Wydawnictwo DiG)
-    const polskiHerbarz = {
-        "lubiszewski": { herb: "Wieniawa", info: "Szlachta wylegitymowana w Królestwie Polskim (Wydawnictwo DiG)" },
-        "mickiewicz": { herb: "Poraj", info: "Herbarz Polski Kaspra Niesieckiego" }
-    };
 
     function herbarzStart() {
-        const nInput = document.getElementById('szukaj').value.trim().toLowerCase();
-        const res = document.getElementById('wyniki');
-        const l = bazy[aktL] || bazy['pl'];
-        
-        if(!nInput || nInput === "dupa") { 
-            res.innerHTML = `<span style="color:red">${l.e}</span>`; 
-            return; 
-        }
-
+        const nIn = document.getElementById('szukaj').value.trim().toLowerCase();
+        const res = document.getElementById('wyniki'); const l = bazy[aktL] || bazy['pl'];
+        if(!nIn) return;
         res.innerHTML = `<em>${l.m}</em>`;
-        const wpis = polskiHerbarz[nInput];
-        if(wpis) { 
-            pobierzZWikipedii(wpis.herb, wpis.info); 
-        } else { 
-            res.innerHTML = `${nInput.toUpperCase()} - ${l.e}`; 
-        }
+        const wpis = polskiHerbarz[nIn];
+        pobierzZWikipedii(wpis ? wpis.h : nIn, wpis ? wpis.i : "Archiwa historyczne");
     }
 
-    // 4. WYŚWIETLANIE WYNIKÓW (Tłumaczy "Herb" i "Źródło")
     async function pobierzZWikipedii(f, info) {
-        const res = document.getElementById('wyniki'); 
-        const l = bazy[aktL] || bazy['pl'];
+        const res = document.getElementById('wyniki'); const l = bazy[aktL] || bazy['pl'];
         const nazwa = f.charAt(0).toUpperCase() + f.slice(1);
-        const api = `https://wikipedia.org{nazwa}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
-        
-        try {
-            const r = await fetch(api); 
-            const d = await r.json(); 
-            const p = d.query.pages; 
-            const id = Object.keys(p);
-            
-            let zawartosc = `<h3>${l.r}${nazwa}</h3>`;
-            if (id !== "-1" && p[id].thumbnail) {
-                zawartosc += `<img src="${p[id].thumbnail.source}" class="herb-img">`;
-            }
-            zawartosc += `<div class="source-info">${l.z}${info}</div>`;
-            res.innerHTML = zawartosc;
-        } catch (e) { 
-            res.innerHTML = "Błąd archiwum."; 
+        const terminy = [`Herb_${nazwa}`, `${nazwa}_(herb_szlachecki)`, nazwa];
+
+        for (let t of terminy) {
+            const api = `https://wikipedia.org{t}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
+            try {
+                const r = await fetch(api); const d = await r.json(); const p = d.query.pages; const id = Object.keys(p);
+                if (id !== "-1" && p[id].thumbnail) {
+                    res.innerHTML = `<div><h3>${l.r}${nazwa}</h3><img src="${p[id].thumbnail.source}" class="herb-img"><div class="source-info">${l.z}${info}</div></div>`;
+                    return;
+                }
+            } catch (e) {}
         }
+        res.innerHTML = `${l.r}${nazwa}<br><div class="source-info">${l.z}${info}</div>`;
     }
 </script>
 </body>
