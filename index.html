@@ -6,11 +6,11 @@
   <title>Herbarz</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-   .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; }
+ .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; }
     #szukaj { padding: 8px; width: 300px; margin: 20px 5px; }
     #przyciskSzukaj { padding: 8px 15px; cursor: pointer; }
     #wyniki { margin-top: 30px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto; }
-   .herb { border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+ .herb { border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
     [dir="rtl"] { direction: rtl; }
     [dir="rtl"] #wyniki { text-align: right; }
   </style>
@@ -42,7 +42,6 @@
   <div id="wyniki"></div>
 
 <script>
-// TŁUMACZENIA
 const tlumaczenia = {
   pl: { tytul: "Herbarz", podtytul: "Herby i genealogia", szukaj: "Szukaj herbu lub nazwiska...", przycisk: "Szukaj", brakWynikow: "Nie znaleziono" },
   en: { tytul: "Armorial", podtytul: "Coats of arms and genealogy", szukaj: "Search coat of arms or surname...", przycisk: "Search", brakWynikow: "No results found" },
@@ -58,7 +57,6 @@ const tlumaczenia = {
   tr: { tytul: "Arma Kitabı", podtytul: "Armalar ve soy ağacı", szukaj: "Arma veya soyadı ara...", przycisk: "Ara", brakWynikow: "Sonuç bulunamadı" }
 };
 
-// BAZA HERBÓW - TU DODAWAJ SWOJE
 const bazaHerbow = [
   { nazwisko: "Lubiszewski", herb: "Lubicz", opis: "W polu błękitnym podkowa srebrna..." },
   { nazwisko: "Kowalski", herb: "Korab", opis: "W polu czerwonym korab złoty..." },
@@ -83,21 +81,16 @@ function szukaj() {
   const fraza = document.getElementById('szukaj').value.toLowerCase().trim();
   const kontenerWynikow = document.getElementById('wyniki');
   kontenerWynikow.innerHTML = '';
-
   if (fraza === '') return;
-
   const wyniki = bazaHerbow.filter(h =>
     h.nazwisko.toLowerCase().includes(fraza) ||
     h.herb.toLowerCase().includes(fraza)
   );
-
   const t = tlumaczenia[aktualnyJezyk];
-
   if (wyniki.length === 0) {
     kontenerWynikow.innerHTML = `<p>${t.brakWynikow}: "${fraza}"</p>`;
     return;
   }
-
   wyniki.forEach(h => {
     kontenerWynikow.innerHTML += `
       <div class="herb">
@@ -108,14 +101,11 @@ function szukaj() {
   });
 }
 
-// Enter też działa
 document.getElementById('szukaj').addEventListener('keyup', function(event) {
   if (event.key === 'Enter') szukaj();
 });
 
-// Start z PL
 zmienJezyk('pl');
 </script>
 </body>
 </html>
-
