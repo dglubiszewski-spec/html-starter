@@ -6,22 +6,23 @@
   <title>Herbarz</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
- .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; }
+    .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; }
     #szukaj { padding: 8px; width: 300px; margin: 20px 5px; }
-    #przyciskSzukaj { padding: 8px 15px; cursor: pointer; }
+    #przyciskSzukaj { padding: 8px 15px; cursor: pointer; background-color: #f0f0f0; border: 1px solid #ccc; }
     #wyniki { margin-top: 30px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto; }
- .herb { border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .herb { border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
     [dir="rtl"] { direction: rtl; }
     [dir="rtl"] #wyniki { text-align: right; }
   </style>
 </head>
 <body>
+
   <h1 id="tytul">Herbarz</h1>
   <p id="podtytul">Herby i genealogia</p>
 
   <div>
     <input id="szukaj" type="text" placeholder="Szukaj herbu lub nazwiska...">
-    <button id="przyciskSzukaj" onclick="szukaj()">Szukaj</button>
+    <button id="przyciskSzukaj" onclick="wykonajSzukanie()">Szukaj</button>
   </div>
 
   <div class="lang-buttons">
@@ -43,18 +44,18 @@
 
 <script>
 const tlumaczenia = {
-  pl: { tytul: "Herbarz", podtytul: "Herby i genealogia", szukaj: "Szukaj herbu lub nazwiska...", przycisk: "Szukaj", brakWynikow: "Nie znaleziono" },
-  en: { tytul: "Armorial", podtytul: "Coats of arms and genealogy", szukaj: "Search coat of arms or surname...", przycisk: "Search", brakWynikow: "No results found" },
-  de: { tytul: "Wappenbuch", podtytul: "Wappen und Genealogie", szukaj: "Wappen oder Nachnamen suchen...", przycisk: "Suchen", brakWynikow: "Keine Ergebnisse" },
-  fr: { tytul: "Armorial", podtytul: "Armoiries et généalogie", szukaj: "Rechercher des armoiries ou un nom...", przycisk: "Chercher", brakWynikow: "Aucun résultat" },
-  es: { tytul: "Heráldica", podtytul: "Escudos y genealogía", szukaj: "Buscar escudo o apellido...", przycisk: "Buscar", brakWynikow: "Sin resultados" },
-  pt: { tytul: "Armorial", podtytul: "Brasões e genealogia", szukaj: "Pesquisar brasão ou sobrenome...", przycisk: "Pesquisar", brakWynikow: "Nenhum resultado" },
-  it: { tytul: "Stemmario", podtytul: "Stemmi e genealogia", szukaj: "Cerca stemma o cognome...", przycisk: "Cerca", brakWynikow: "Nessun risultato" },
-  se: { tytul: "Vapenbok", podtytul: "Vapen och genealogi", szukaj: "Sök vapen eller efternamn...", przycisk: "Sök", brakWynikow: "Inga resultat" },
-  no: { tytul: "Våpenbok", podtytul: "Våpen og slektsforskning", szukaj: "Søk våpen eller etternavn...", przycisk: "Søk", brakWynikow: "Ingen resultater" },
-  he: { tytul: "ספר השלטים", podtytul: "שלטי אצולה וגנאלוגיה", szukaj: "חפש שלט אצולה או שם משפחה...", przycisk: "חפש", brakWynikow: "לא נמצאו תוצאות" },
-  ar: { tytul: "كتاب شعارات النبالة", podtytul: "شعارات النبالة وعلم الأنساب", szukaj: "ابحث عن شعار أو لقب...", przycisk: "بحث", brakWynikow: "لا توجد نتائج" },
-  tr: { tytul: "Arma Kitabı", podtytul: "Armalar ve soy ağacı", szukaj: "Arma veya soyadı ara...", przycisk: "Ara", brakWynikow: "Sonuç bulunamadı" }
+  pl: { tytul: "Herbarz", podtytul: "Herby i genealogia", szukaj: "Szukaj herbu lub nazwiska...", przycisk: "Szukaj", brak: "Nie znaleziono" },
+  en: { tytul: "Armorial", podtytul: "Coats of arms and genealogy", szukaj: "Search coat of arms...", przycisk: "Search", brak: "No results found" },
+  de: { tytul: "Wappenbuch", podtytul: "Wappen und Genealogie", szukaj: "Wappen suchen...", przycisk: "Suchen", brak: "Keine Ergebnisse" },
+  fr: { tytul: "Armorial", podtytul: "Armoiries et généalogie", szukaj: "Rechercher...", przycisk: "Chercher", brak: "Aucun résultat" },
+  es: { tytul: "Heráldica", podtytul: "Escudos y genealogía", szukaj: "Buscar...", przycisk: "Buscar", brak: "Sin resultados" },
+  pt: { tytul: "Armorial", podtytul: "Brasões e genealogia", szukaj: "Pesquisar...", przycisk: "Pesquisar", brak: "Nenhum resultado" },
+  it: { tytul: "Stemmario", podtytul: "Stemmi e genealogia", szukaj: "Cerca...", przycisk: "Cerca", brak: "Nessun risultato" },
+  se: { tytul: "Vapenbok", podtytul: "Vapen och genealogi", szukaj: "Sök...", przycisk: "Sök", brak: "Inga rezultat" },
+  no: { tytul: "Våpenbok", podtytul: "Våpen og slektsforskning", szukaj: "Sök...", przycisk: "Sök", brak: "Ingen resultater" },
+  he: { tytul: "ספר השלטים", podtytul: "שלטי אצולה וגנאלוגia", szukaj: "חפש...", przycisk: "חפש", brak: "לא נמצאו תוצאות" },
+  ar: { tytul: "كتاب شعارات النبالة", podtytul: "شعارات النبالة وعلم الأنساب", szukaj: "ابحث...", przycisk: "بحث", brak: "لا توjed نتائج" },
+  tr: { tytul: "Arma Kitabı", podtytul: "Armalar ve soy ağacı", szukaj: "Ara...", przycisk: "Ara", brak: "Sonuç bulunamadı" }
 };
 
 const bazaHerbow = [
@@ -63,36 +64,50 @@ const bazaHerbow = [
   { nazwisko: "Nowak", herb: "Nałęcz", opis: "W polu czerwonym chusta srebrna..." }
 ];
 
-let aktualnyJezyk = 'pl';
+let aktywnyJezyk = 'pl';
 
-function zmienJezyk(lang) {
-  aktualnyJezyk = lang;
-  const t = tlumaczenia;
-  document.getElementById('tytul').textContent = t.tytul;
-  document.getElementById('podtytul').textContent = t.podtytul;
-  document.getElementById('szukaj').placeholder = t.szukaj;
-  document.getElementById('przyciskSzukaj').textContent = t.przycisk;
-  document.documentElement.lang = lang;
-  document.documentElement.dir = (lang === 'he' || lang === 'ar')? 'rtl' : 'ltr';
-  document.title = t.tytul;
+function zmienJezyk(kodJezyka) {
+  aktywnyJezyk = kodJezyka;
+  const dane = tlumaczenia[kodJezyka]; // Pobranie paczki językowej
+  
+  if (!dane) return; // Zabezpieczenie przed błędem
+
+  // Podmiana tekstów
+  document.getElementById('tytul').innerText = dane.tytul;
+  document.getElementById('podtytul').innerText = dane.podtytul;
+  document.getElementById('szukaj').placeholder = dane.szukaj;
+  document.getElementById('przyciskSzukaj').innerText = dane.przycisk;
+  
+  // Kierunek tekstu
+  document.documentElement.lang = kodJezyka;
+  document.documentElement.dir = (kodJezyka === 'he' || kodJezyka === 'ar') ? 'rtl' : 'ltr';
+  
+  // Tytuł strony w przeglądarce
+  document.title = dane.tytul;
 }
 
-function szukaj() {
-  const fraza = document.getElementById('szukaj').value.toLowerCase().trim();
-  const kontenerWynikow = document.getElementById('wyniki');
-  kontenerWynikow.innerHTML = '';
+function wykonajSzukanie() {
+  const poleSzukaj = document.getElementById('szukaj');
+  const fraza = poleSzukaj.value.toLowerCase().trim();
+  const kontener = document.getElementById('wyniki');
+  
+  kontener.innerHTML = '';
   if (fraza === '') return;
+
   const wyniki = bazaHerbow.filter(h =>
     h.nazwisko.toLowerCase().includes(fraza) ||
     h.herb.toLowerCase().includes(fraza)
   );
-  const t = tlumaczenia[aktualnyJezyk];
+
+  const t = tlumaczenia[aktywnyJezyk];
+
   if (wyniki.length === 0) {
-    kontenerWynikow.innerHTML = `<p>${t.brakWynikow}: "${fraza}"</p>`;
+    kontener.innerHTML = `<p>${t.brak}: "${fraza}"</p>`;
     return;
   }
+
   wyniki.forEach(h => {
-    kontenerWynikow.innerHTML += `
+    kontener.innerHTML += `
       <div class="herb">
         <h3>${h.nazwisko} - ${h.herb}</h3>
         <p>${h.opis}</p>
@@ -101,11 +116,15 @@ function szukaj() {
   });
 }
 
-document.getElementById('szukaj').addEventListener('keyup', function(event) {
-  if (event.key === 'Enter') szukaj();
-});
+// Obsługa Entera
+document.getElementById('szukaj').onkeyup = function(e) {
+  if (e.key === "Enter") wykonajSzukanie();
+};
 
+// Startowa inicjalizacja
 zmienJezyk('pl');
 </script>
+
 </body>
 </html>
+
