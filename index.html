@@ -92,36 +92,34 @@
 
     <div id="wyniki"></div>
 </div>
-
 <script>
     // 1. KOMPLETNA BAZA TŁUMACZEŃ (13 JĘZYKÓW)
     const bazy = {
-        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Szukanie...', r:'Herb: ', z:'Źródło: ', e:'Nie znaleziono.'},
+        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Szukanie...', r:'Herb: ', z:'Źródło: ', e:'Nie znaleziono nazwiska.'},
         'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search', m:'Searching...', r:'Coat: ', z:'Source: ', e:'Not found.'},
         'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche', m:'Suche...', r:'Wappen: ', z:'Quelle: ', e:'Nicht gefunden.'},
         'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom...', b:'Chercher', m:'Recherche...', r:'Blason: ', z:'Source: ', e:'Pas trouvé.'},
         'es': {t:'ARMORIAL', s:'Genealogía de familias nobles', p:'Apellido...', b:'Buscar', m:'Buscando...', r:'Escudo: ', z:'Fuente: ', e:'No encontrado.'},
-        'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar', m:'Procurando...', r:'Brasão: ', z:'Fonte: ', e:'Não encontrado.'},
+        'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar', m:'Procurando...', r:'Brasão: ', z:'Fonte: ', e:'Nie znaleziono.'},
         'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca', m:'Ricerca...', r:'Stemma: ', z:'Fonte: ', e:'Non trovato.'},
         'se': {t:'VAPENBOK', s:'Släktforskning', p:'Efternamn...', b:'Sök', m:'Söker...', r:'Vapen: ', z:'Källa: ', e:'Hittades inte.'},
         'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Sök', m:'Søker...', r:'Våpen: ', z:'Kilde: ', e:'Ikke funnet.'},
-        'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפחה...', b:'חיפוש', m:'מחפש...', r:'שלט אצולה: ', z:'מקור: ', e:'לא נמצא.'},
+        'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפחה...', b:'חיפוש', m:'מחפש...', r:'שלટ אצולה: ', z:'מקור: ', e:'לא נמצא.'},
         'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث', m:'بحث...', r:'شعار: ', z:'مصدر: ', e:'خطأ.'},
-        'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara', m:'Aranıyor...', r:'Arma: ', z:'Kaynak: ', e:'Hata.'},
-        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Прізвище...', b:'Пошук', m:'Пошук...', r:'Герб: ', z:'Джерело: ', e:'Помилка.'}
+        'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara', m:'Aranıyor...', r:'Arma: ', z:'Kaynak: ', e:'Bulunamadı.'},
+        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Прізвище...', b:'Пошук', m:'Пошук...', r:'Герб: ', z:'Джерело: ', e:'Не знайдено.'}
     };
 
     let aktL = 'pl';
 
-    // 2. FUNKCJA ZMIANY JĘZYKA (Flagi)
-    function zmien(k) {
-        aktL = k;
+    function zmien(k) { 
+        aktL = k; 
         const l = bazy[k] || bazy['pl'];
-        document.getElementById('t').innerText = l.t;
+        document.getElementById('t').innerText = l.t; 
         document.getElementById('s').innerText = l.s;
-        document.getElementById('szukaj').placeholder = l.p;
-        document.getElementById('btn-szukaj').innerText = l.b;
-
+        document.getElementById('szukaj').placeholder = l.p; 
+        document.getElementById('btn-szukaj').innerText = l.b; 
+        
         const url = new URL(window.location);
         url.searchParams.set('lang', k);
         window.history.pushState({}, '', url);
@@ -129,60 +127,51 @@
         if(document.getElementById('wyniki').innerHTML !== "") herbarzStart();
     }
 
-    // 3. WYSZUKIWARKA (Szuka w herbarz.json)
     async function herbarzStart() {
-        // Normalizacja tekstu (usuwa polskie ogonki, np. ś -> s)
-        const nInput = document.getElementById('szukaj').value.trim().toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/g, "l");
-        
+        const nIn = document.getElementById('szukaj').value.trim().toLowerCase();
         const res = document.getElementById('wyniki');
         const l = bazy[aktL] || bazy['pl'];
-        if(!nInput) return;
+        if(!nIn) return;
 
         res.innerHTML = `<em>${l.m}</em>`;
 
         try {
             const response = await fetch('herbarz.json');
+            if (!response.ok) throw new Error();
             const dane = await response.json();
-            const wpis = dane[nInput];
+            const wpis = dane[nIn];
             
             if(wpis) { 
                 pobierzZWikipedii(wpis.h, wpis.i); 
             } else { 
-                res.innerHTML = `${document.getElementById('szukaj').value.toUpperCase()} - ${l.e}`; 
+                res.innerHTML = `${nIn.toUpperCase()} - ${l.e}`; 
             }
         } catch (e) {
-            res.innerHTML = "Błąd bazy danych.";
+            res.innerHTML = l.e; 
         }
     }
 
-    // 4. POBIERANIE OBRAZKA
-    async function pobierzZWikipedii(h, info) {
-        const res = document.getElementById('wyniki');
+    async function pobierzZWikipedii(f, info) {
+        const res = document.getElementById('wyniki'); 
         const l = bazy[aktL] || bazy['pl'];
-        const query = h.replace(/ /g, "_");
-        const terminy = [`${query}_(herb_szlachecki)`, `Herb_${query}`, query];
-
-        for (let t of terminy) {
-            const api = `https://wikipedia.org{t}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
-            try {
-                const r = await fetch(api);
-                const d = await r.json();
-                const p = d.query.pages;
-                const id = Object.keys(p);
-                
-                if (id !== "-1" && p[id].thumbnail) {
-                    res.innerHTML = `
-                        <div class="herb-item">
-                            <h3>${l.r}${h}</h3>
-                            <img src="${p[id].thumbnail.source}" style="max-width:250px; border:4px double #4a3728; background:white; padding:15px; margin:15px 0;">
-                            <div class="source-info">${l.z}${info}</div>
-                        </div>`;
-                    return;
-                }
-            } catch (e) { }
+        const nazwa = f.charAt(0).toUpperCase() + f.slice(1);
+        const api = `https://wikipedia.org{nazwa}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
+        
+        try {
+            const r = await fetch(api); 
+            const d = await r.json(); 
+            const p = d.query.pages; 
+            const id = Object.keys(p);
+            
+            let html = `<h3>${l.r}${nazwa}</h3>`;
+            if (id !== "-1" && p[id].thumbnail) {
+                html += `<img src="${p[id].thumbnail.source}" style="max-width:250px; border:4px double #4a3728; background:white; padding:15px; margin:15px 0;">`;
+            }
+            html += `<div style="font-size:14px; border-top:1px dashed #4a3728; padding-top:10px;">${l.z}${info}</div>`;
+            res.innerHTML = html;
+        } catch (e) { 
+            res.innerHTML = "Błąd archiwum."; 
         }
-        res.innerHTML = `<h3>${l.r}${h}</h3><div class="source-info">${l.z}${info}</div>`;
     }
 
     window.onload = function() {
@@ -190,7 +179,9 @@
         if(params.has('lang')) zmien(params.get('lang'));
     };
 </script>
-
 </body>
 </html>
+
+
+
 
