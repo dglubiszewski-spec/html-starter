@@ -44,8 +44,8 @@ function zmienJezyk(lang) {
     no: { tytul: "Våpenbok", podtytul: "Våpen og slektsforskning", szukaj: "Søk våpen eller etternavn..." },
     he: { tytul: "ספר השלטים", podtytul: "שלטי אצולה וגנאלוגיה", szukaj: "חפש שלט אצולה או שם משפחה..." },
     ar: { tytul: "كتاب شعارات النبالة", podtytul: "شعارات النبالة وعلم الأنساب", szukaj: "ابحث عن شعار أو لقب..." }
-  };
-  
+  }; // <-- TEN KAWAŁEK NAPRAWIA WSZYSTKO
+
   document.getElementById('tytul').textContent = t.tytul;
   document.getElementById('podtytul').textContent = t.podtytul;
   document.getElementById('szukaj').placeholder = t.szukaj;
@@ -54,6 +54,7 @@ function zmienJezyk(lang) {
   document.title = t.tytul;
 }
 </script>
+
 </body>
 </html>
 
