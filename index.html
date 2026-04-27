@@ -12,7 +12,6 @@
         h1 { color: #4a3728; font-size: 60px; margin: 0; letter-spacing: 4px; }
         .subtitle { font-style: italic; color: #4a3728; margin: 10px 0 30px 0; border-top: 1px solid #4a3728; display: inline-block; padding-top: 5px; }
 
-        /* GWARANCJA WYŚWIETLANIA: Flagi jako tekst, nie obrazki */
         .lang-wrapper { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 35px; }
         .lang-btn { 
             font-size: 30px; cursor: pointer; background: none; border: 1px solid rgba(74, 55, 40, 0.2); 
@@ -25,7 +24,7 @@
         #btn-szukaj { padding: 15px 30px; background: #4a3728; color: white; border: none; cursor: pointer; font-size: 18px; font-weight: bold; }
 
         #wyniki { margin-top: 30px; color: #4a3728; min-height: 100px; }
-        .herb-item img { max-width: 250px; border: 3px double #4a3728; background: white; padding: 15px; margin-top: 10px; }
+        .herb-item img { max-width: 250px; border: 3px double #4a3728; background: white; padding: 15px; margin-top: 10px; box-shadow: 5px 5px 15px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
@@ -35,20 +34,19 @@
     <div class="subtitle" id="s">Księgi i Genealogia Rodów Szlacheckich</div>
 
     <div class="lang-wrapper">
-        <!-- Każda flaga to tekstowa ikona (Emoji) -->
-        <button class="lang-btn" onclick="zmien('pl')" title="Polski">🇵🇱</button>
-        <button class="lang-btn" onclick="zmien('en')" title="English">🇬🇧</button>
-        <button class="lang-btn" onclick="zmien('de')" title="Deutsch">🇩🇪</button>
-        <button class="lang-btn" onclick="zmien('fr')" title="Français">🇫🇷</button>
-        <button class="lang-btn" onclick="zmien('es')" title="Español">🇪🇸</button>
-        <button class="lang-btn" onclick="zmien('pt')" title="Português">🇵🇹</button>
-        <button class="lang-btn" onclick="zmien('it')" title="Italiano">🇮🇹</button>
-        <button class="lang-btn" onclick="zmien('se')" title="Svenska">🇸🇪</button>
-        <button class="lang-btn" onclick="zmien('no')" title="Norsk">🇳🇴</button>
-        <button class="lang-btn" onclick="zmien('he')" title="עברית">🇮🇱</button>
-        <button class="lang-btn" onclick="zmien('ar')" title="العربية">🇸🇦</button>
-        <button class="lang-btn" onclick="zmien('tr')" title="Türkçe">🇹🇷</button>
-        <button class="lang-btn" onclick="zmien('ua')" title="Українська">🇺🇦</button>
+        <button class="lang-btn" onclick="zmien('pl')">🇵🇱</button>
+        <button class="lang-btn" onclick="zmien('en')">🇬🇧</button>
+        <button class="lang-btn" onclick="zmien('de')">🇩🇪</button>
+        <button class="lang-btn" onclick="zmien('fr')">🇫🇷</button>
+        <button class="lang-btn" onclick="zmien('es')">🇪🇸</button>
+        <button class="lang-btn" onclick="zmien('pt')">🇵🇹</button>
+        <button class="lang-btn" onclick="zmien('it')">🇮🇹</button>
+        <button class="lang-btn" onclick="zmien('se')">🇸🇪</button>
+        <button class="lang-btn" onclick="zmien('no')">🇳🇴</button>
+        <button class="lang-btn" onclick="zmien('he')">🇮🇱</button>
+        <button class="lang-btn" onclick="zmien('ar')">🇸🇦</button>
+        <button class="lang-btn" onclick="zmien('tr')">🇹🇷</button>
+        <button class="lang-btn" onclick="zmien('ua')">🇺🇦</button>
     </div>
 
     <div class="search-area">
@@ -69,7 +67,7 @@
         'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar'},
         'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca'},
         'se': {t:'VAPENBOK', s:'Adelsfamiljers genealogi', p:'Efternamn...', b:'Sök'},
-        'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Sök'},
+        'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Søk'},
         'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפחה...', b:'חיפוש'},
         'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث'},
         'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara'},
@@ -86,25 +84,34 @@
     }
 
     async function szukajHerbu() {
-        const q = document.getElementById('szukaj').value;
+        const q = document.getElementById('szukaj').value.trim();
         const res = document.getElementById('wyniki');
         if(!q) return;
-        res.innerHTML = "Szukanie...";
+        res.innerHTML = "<em>Przeszukiwanie starych ksiąg...</em>";
+
         const nazwa = q.charAt(0).toUpperCase() + q.slice(1);
-        const api = `https://wikipedia.org{nazwa}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
-        try {
-            const r = await fetch(api);
-            const d = await r.json();
-            const p = d.query.pages;
-            const id = Object.keys(p);
-            if (id !== "-1" && p[id].thumbnail) {
-                res.innerHTML = `<div class="herb-item"><h3>Herb ${nazwa}</h3><img src="${p[id].thumbnail.source}"></div>`;
-            } else {
-                res.innerHTML = "Nie znaleziono herbu.";
+        // Próbujemy szukać bezpośrednio nazwy lub z dopiskiem "Herb"
+        const urls = [
+            `https://wikipedia.org{nazwa}&prop=pageimages&format=json&pithumbsize=500&origin=*`,
+            `https://wikipedia.org{nazwa}&prop=pageimages&format=json&pithumbsize=500&origin=*`
+        ];
+
+        for (let url of urls) {
+            try {
+                const r = await fetch(url);
+                const d = await r.json();
+                const p = d.query.pages;
+                const id = Object.keys(p)[0];
+
+                if (id !== "-1" && p[id].thumbnail) {
+                    res.innerHTML = `<div class="herb-item"><h3>Herb ${nazwa}</h3><img src="${p[id].thumbnail.source}"></div>`;
+                    return; // Znaleziono, przerywamy pętlę
+                }
+            } catch (e) {
+                console.error("Błąd API");
             }
-        } catch (e) {
-            res.innerHTML = "Błąd bazy.";
         }
+        res.innerHTML = "Nie znaleziono herbu dla: " + nazwa;
     }
 </script>
 </body>
