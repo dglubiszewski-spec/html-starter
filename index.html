@@ -130,13 +130,30 @@
     }
 
 
-    function herbarzStart() {
+        async function herbarzStart() {
         const nIn = document.getElementById('szukaj').value.trim().toLowerCase();
-        const res = document.getElementById('wyniki'); const l = bazy[aktL] || bazy['pl'];
+        const res = document.getElementById('wyniki');
+        const l = bazy[aktL] || bazy['pl'];
         if(!nIn) return;
+
         res.innerHTML = `<em>${l.m}</em>`;
-        const wpis = polskiHerbarz[nIn];
-        pobierzZWikipedii(wpis ? wpis.h : nIn, wpis ? wpis.i : "Archiwa historyczne");
+
+        try {
+            // Pobieranie bazy 3000 nazwisk z pliku JSON
+            const response = await fetch('herbarz.json');
+            const dane = await response.json();
+            
+            const wpis = dane[nIn];
+            if(wpis) { 
+                pobierzZWikipedii(wpis.h, wpis.i); 
+            } else { 
+                res.innerHTML = `${nIn.toUpperCase()} - ${l.e}`; 
+            }
+        } catch (e) {
+            res.innerHTML = "Błąd ładowania bazy nazwisk.";
+        }
+    }
+
     }
 
     async function pobierzZWikipedii(f, info) {
