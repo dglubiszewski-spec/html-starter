@@ -150,10 +150,10 @@
         } else { 
             res.innerHTML = nRaw.toUpperCase() + " - " + l.e; 
         }
-    } catch (e) {
-        // TUTAJ POPRAWIŁEM: Bierze komunikat o błędzie z tablicy tłumaczeń (l.e)
-        res.innerHTML = `<span style="color:#4a3728">${l.e}</span>`; 
+        } catch (e) {
+        res.innerHTML = l.e; 
     }
+
 }
  
 
