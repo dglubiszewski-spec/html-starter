@@ -2,85 +2,112 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Herbarz - Księgi i Genealogia Rodów Szlacheckich</title>
+    <title>Herbarz Szlachecki - herbarz.com</title>
     <style>
-        /* Stylizowanie przycisków z flagami */
+        body { background-color: #b59a6d; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: serif; }
+        
+        /* Styl ozdobnej karty */
+        .karta {
+            background-color: #f3e5ab;
+            padding: 50px;
+            border: 2px solid #4a3728;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+            min-width: 600px;
+            /* Tutaj można by dodać obrazek postrzępionych brzegów w border-image */
+        }
+
+        h1 { color: #4a3728; font-size: 60px; margin: 0; text-transform: uppercase; }
+        .subtitle { font-style: italic; color: #4a3728; margin-bottom: 30px; }
+
+        /* Poprawiony kontener na 11 flag */
         .lang-buttons {
-            margin-top: 15px;
+            margin: 20px auto;
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            max-width: 500px;
             flex-wrap: wrap;
         }
+
         .lang-buttons button {
             background: none;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid #4a3728;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 22px;
-            padding: 5px 8px;
+            font-size: 24px;
+            padding: 5px;
             transition: transform 0.2s;
         }
+
         .lang-buttons button:hover {
             transform: scale(1.2);
-            background-color: #f0f0f0;
+            background-color: rgba(74, 55, 40, 0.1);
         }
-        /* Styl wyszukiwarki (zgodnie z Twoim zdjęciem) */
-        .search-container {
-            margin: 20px 0;
+
+        /* Styl wyszukiwarki */
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
+
         #szukaj {
-            padding: 10px;
-            width: 250px;
-            border: 1px solid #666;
+            padding: 15px;
+            width: 350px;
+            border: 2px solid #4a3728;
+            background: #fffef0;
+            font-size: 18px;
         }
+
         #przyciskSzukaj {
-            padding: 10px 20px;
+            padding: 15px 30px;
             background-color: #4a3728;
             color: white;
             border: none;
             cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
-    <div class="search-container">
-        <input id="szukaj" type="text" placeholder="Szukaj herbu lub nazwiska...">
-        <button id="przyciskSzukaj" onclick="wykonajSzukanie()">Szukaj</button>
-    </div>
+<div class="karta">
+    <h1>HERBARZ</h1>
+    <div class="subtitle">Księgi i Genealogia Rodów Szlacheckich</div>
 
+    <!-- Tutaj są Twoje przyciski - teraz jako 11 flag -->
     <div class="lang-buttons">
         <button onclick="zmienJezyk('pl')" title="Polski">🇵🇱</button>
         <button onclick="zmienJezyk('en')" title="English">🇬🇧</button>
         <button onclick="zmienJezyk('de')" title="Deutsch">🇩🇪</button>
         <button onclick="zmienJezyk('fr')" title="Français">🇫🇷</button>
         <button onclick="zmienJezyk('es')" title="Español">🇪🇸</button>
-        <button onclick="zmienJezyk('pt')" title="Português">🇵🇹</button>
         <button onclick="zmienJezyk('it')" title="Italiano">🇮🇹</button>
-        <button onclick="zmienJezyk('se')" title="Svenska">🇸🇪</button>
-        <button onclick="zmienJezyk('no')" title="Norsk">🇳🇴</button>
-        <button onclick="zmienJezyk('he')" title="עברית">🇮🇱</button>
-        <button onclick="zmienJezyk('ar')" title="العربية">🇸🇦</button>
-        <button onclick="zmienJezyk('tr')" title="Türkçe">🇹🇷</button>
         <button onclick="zmienJezyk('ru')" title="Русский">🇷🇺</button>
+        <button onclick="zmienJezyk('ua')" title="Українська">🇺🇦</button>
+        <button onclick="zmienJezyk('lt')" title="Lietuvių">🇱🇹</button>
+        <button onclick="zmienJezyk('se')" title="Svenska">🇸🇪</button>
+        <button onclick="zmienJezyk('tr')" title="Türkçe">🇹🇷</button>
     </div>
 
-    <div id="wyniki"></div>
+    <div class="search-box">
+        <input id="szukaj" type="text" placeholder="Wpisz nazwisko...">
+        <button id="przyciskSzukaj" onclick="wykonajSzukanie()">Szukaj</button>
+    </div>
+</div>
 
-    <script>
-        function zmienJezyk(kod) {
-            console.log("Zmieniono język na: " + kod);
-            // Tutaj możesz dodać logikę przeładowania strony z parametrem 
-            // np. window.location.search = "?lang=" + kod;
-            // Lub wywołanie tłumaczenia treści przez JS.
-        }
-
-        function wykonajSzukanie() {
-            const nazwisko = document.getElementById('szukaj').value;
-            document.getElementById('wyniki').innerHTML = "Szukanie dla: " + nazwisko;
-        }
-    </script>
+<script>
+    function zmienJezyk(kod) {
+        console.log("Wybrano język: " + kod);
+        // Logika zmiany języka
+    }
+    function wykonajSzukanie() {
+        // Logika wyszukiwania
+    }
+</script>
 
 </body>
 </html>
