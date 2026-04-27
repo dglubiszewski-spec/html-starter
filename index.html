@@ -1,39 +1,64 @@
 <!DOCTYPE html>
-<html lang="pl" dir="ltr">
+<html lang="pl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Herbarz</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+    .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; }
+    #szukaj { padding: 8px; width: 300px; margin: 20px 0; }
+    [dir="rtl"] { direction: rtl; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <div class="lang-switcher">
-      <button onclick="zmienJezyk('pl')">PL</button>
-      <button onclick="zmienJezyk('en')">EN</button>
-      <button onclick="zmienJezyk('de')">DE</button>
-      <button onclick="zmienJezyk('fr')">FR</button>
-      <button onclick="zmienJezyk('es')">ES</button>
-      <button onclick="zmienJezyk('pt')">PT</button>
-      <button onclick="zmienJezyk('it')">IT</button>
-      <button onclick="zmienJezyk('se')">SE</button>
-      <button onclick="zmienJezyk('no')">NO</button>
-      <button onclick="zmienJezyk('he')">HE</button>
-      <button onclick="zmienJezyk('ar')">AR</button>
-    </div>
-
-    <h1 id="tytul">Herbarz</h1>
-    <p class="subtitle" id="podtytul">Herby i genealogia</p>
-
-    <div class="search-box">
-      <input type="text" id="search" placeholder="Szukaj herbu lub nazwiska...">
-    </div>
-
-    <div id="items-list" class="items-grid">
-      <!-- Tu będą herby i opisy rodów -->
-    </div>
+  <h1 id="tytul">Herbarz</h1>
+  <p id="podtytul">Herby i genealogia</p>
+  
+  <input id="szukaj" type="text" placeholder="Szukaj herbu lub nazwiska...">
+  
+  <div class="lang-buttons">
+    <button onclick="zmienJezyk('pl')">PL</button>
+    <button onclick="zmienJezyk('en')">EN</button>
+    <button onclick="zmienJezyk('de')">DE</button>
+    <button onclick="zmienJezyk('fr')">FR</button>
+    <button onclick="zmienJezyk('es')">ES</button>
+    <button onclick="zmienJezyk('pt')">PT</button>
+    <button onclick="zmienJezyk('it')">IT</button>
+    <button onclick="zmienJezyk('se')">SE</button>
+    <button onclick="zmienJezyk('no')">NO</button>
+    <button onclick="zmienJezyk('he')">HE</button>
+    <button onclick="zmienJezyk('ar')">AR</button>
   </div>
 
-  <script src="app.js"></script>
+  <div id="wyniki">
+    <!-- Tu później wlecą herby -->
+  </div>
+
+<script>
+function zmienJezyk(lang) {
+  const t = {
+    pl: { tytul: "Herbarz", podtytul: "Herby i genealogia", szukaj: "Szukaj herbu lub nazwiska..." },
+    en: { tytul: "Armorial", podtytul: "Coats of arms and genealogy", szukaj: "Search coat of arms or surname..." },
+    de: { tytul: "Wappenbuch", podtytul: "Wappen und Genealogie", szukaj: "Wappen oder Nachnamen suchen..." },
+    fr: { tytul: "Armorial", podtytul: "Armoiries et généalogie", szukaj: "Rechercher des armoiries ou un nom..." },
+    es: { tytul: "Heráldica", podtytul: "Escudos y genealogía", szukaj: "Buscar escudo o apellido..." },
+    pt: { tytul: "Armorial", podtytul: "Brasões e genealogia", szukaj: "Pesquisar brasão ou sobrenome..." },
+    it: { tytul: "Stemmario", podtytul: "Stemmi e genealogia", szukaj: "Cerca stemma o cognome..." },
+    se: { tytul: "Vapenbok", podtytul: "Vapen och genealogi", szukaj: "Sök vapen eller efternamn..." },
+    no: { tytul: "Våpenbok", podtytul: "Våpen og slektsforskning", szukaj: "Søk våpen eller etternavn..." },
+    he: { tytul: "ספר השלטים", podtytul: "שלטי אצולה וגנאלוגיה", szukaj: "חפש שלט אצולה או שם משפחה..." },
+    ar: { tytul: "كتاب شعارات النبالة", podtytul: "شعارات النبالة وعلم الأنساب", szukaj: "ابحث عن شعار أو لقب..." }
+  };
+  
+  document.getElementById('tytul').textContent = t.tytul;
+  document.getElementById('podtytul').textContent = t.podtytul;
+  document.getElementById('szukaj').placeholder = t.szukaj;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = (lang === 'he' || lang === 'ar') ? 'rtl' : 'ltr';
+  document.title = t.tytul;
+}
+</script>
 </body>
 </html>
