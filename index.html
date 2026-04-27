@@ -5,14 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Herbarz</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-    .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; }
-    #szukaj { padding: 8px; width: 300px; margin: 20px 5px; }
-    #przyciskSzukaj { padding: 8px 15px; cursor: pointer; background-color: #f0f0f0; border: 1px solid #ccc; }
-    #wyniki { margin-top: 30px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto; }
-    .herb { border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f9; }
+    .lang-buttons { margin-bottom: 25px; }
+    .lang-buttons button { margin: 3px; padding: 7px 14px; cursor: pointer; border: 1px solid #ccc; background: white; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+    .lang-buttons button:hover { background: #e2e2e2; }
+    
+    #szukaj { padding: 12px; width: 300px; margin: 20px 5px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+    #przyciskSzukaj { padding: 12px 24px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px; }
+    #przyciskSzukaj:hover { background-color: #0056b3; }
+
+    #wyniki { margin-top: 30px; text-align: left; max-width: 700px; margin-left: auto; margin-right: auto; }
+    
+    .herb-card { 
+      display: flex; 
+      align-items: center; 
+      background: white; 
+      padding: 20px; 
+      margin-bottom: 20px; 
+      border-radius: 10px; 
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      gap: 20px;
+    }
+    .herb-card img { width: 100px; height: auto; border-radius: 5px; }
+    .herb-info { flex: 1; }
+    .herb-info h3 { margin: 0 0 10px 0; color: #222; border-bottom: 2px solid #007bff; display: inline-block; }
+    .herb-info p { margin: 5px 0; color: #555; line-height: 1.5; }
+
     [dir="rtl"] { direction: rtl; }
     [dir="rtl"] #wyniki { text-align: right; }
+    [dir="rtl"] .herb-card { flex-direction: row-reverse; }
   </style>
 </head>
 <body>
@@ -52,76 +73,103 @@ const tlumaczenia = {
   pt: { tytul: "Armorial", podtytul: "Brasões e genealogia", szukaj: "Pesquisar...", przycisk: "Pesquisar", brak: "Nenhum resultado" },
   it: { tytul: "Stemmario", podtytul: "Stemmi e genealogia", szukaj: "Cerca...", przycisk: "Cerca", brak: "Nessun risultato" },
   se: { tytul: "Vapenbok", podtytul: "Vapen och genealogi", szukaj: "Sök...", przycisk: "Sök", brak: "Inga rezultat" },
-  no: { tytul: "Våpenbok", podtytul: "Våpen og slektsforskning", szukaj: "Sök...", przycisk: "Sök", brak: "Ingen resultater" },
-  he: { tytul: "ספר השלטים", podtytul: "שלטי אצולה וגנאלוגia", szukaj: "חפש...", przycisk: "חפש", brak: "לא נמצאו תוצאות" },
-  ar: { tytul: "كتاب شعارات النبالة", podtytul: "شعارات النبالة وعلم الأنساب", szukaj: "ابحث...", przycisk: "بحث", brak: "لا توjed نتائج" },
+  no: { tytul: "Våpenbok", podtytul: "Våpen og slektsforskning", szukaj: "Søk...", przycisk: "Sök", brak: "Ingen resultater" },
+  he: { tytul: "ספר השלטים", podtytul: "שלטי אצולה וגנאלוגיה", szukaj: "חפש...", przycisk: "חפש", brak: "לא נמצאו תוצאות" },
+  ar: { tytul: "كتاب شعارات النبالة", podtytul: "شعارات النبالة وعلم الأنساب", szukaj: "ابحث...", przycisk: "بحث", brak: "لا توجد wyniki" },
   tr: { tytul: "Arma Kitabı", podtytul: "Armalar ve soy ağacı", szukaj: "Ara...", przycisk: "Ara", brak: "Sonuç bulunamadı" }
 };
 
 const bazaHerbow = [
-  { nazwisko: "Lubiszewski", herb: "Lubicz", opis: "W polu błękitnym podkowa srebrna..." },
-  { nazwisko: "Kowalski", herb: "Korab", opis: "W polu czerwonym korab złoty..." },
-  { nazwisko: "Nowak", herb: "Nałęcz", opis: "W polu czerwonym chusta srebrna..." }
+  { 
+    nazwisko: "Lubiszewski", 
+    herb: "Lubicz", 
+    obrazek: "https://wikimedia.org",
+    opisy: {
+      pl: "W polu błękitnym podkowa srebrna barkiem do góry, dwa krzyże kawalerskie złote.",
+      en: "In a blue field, a silver horseshoe with two golden cavalier crosses.",
+      de: "In blauem Feld ein silbernes Hufeisen mit zwei goldenen Tatzenkreuzen.",
+      fr: "Dans un champ bleu, un fer à cheval d'argent et deux croix de cavalier d'or.",
+      es: "En un campo azul, una herradura de plata y dos cruces de caballero de oro.",
+      tr: "Mavi bir alanda, iki altın haçlı gümüş bir at nalı."
+    }
+  },
+  { 
+    nazwisko: "Kowalski", 
+    herb: "Korab", 
+    obrazek: "https://wikimedia.org",
+    opisy: {
+      pl: "W polu czerwonym korab złoty z murowaną wieżą.",
+      en: "In a red field, a golden ship with a stone tower.",
+      de: "In rotem Feld ein goldenes Schiff mit einem gemauerten Turm.",
+      fr: "Dans un champ rouge, un navire d'or avec une tour maçonnée.",
+      es: "En un campo rojo, una nave de oro con una torre de piedra.",
+      tr: "Kırmızı bir alanda, taş kuleli altın bir gemi."
+    }
+  },
+  { 
+    nazwisko: "Nowak", 
+    herb: "Nałęcz", 
+    obrazek: "https://wikimedia.org",
+    opisy: {
+      pl: "W polu czerwonym chusta srebrna ułożona w koło i związana u dołu.",
+      en: "In a red field, a silver cloth arranged in a circle and tied at the bottom.",
+      de: "In rotem Feld ein silbernes Tuch, im Kreis gelegt und unten geknotet.",
+      fr: "Dans un champ rouge, un foulard d'argent disposé en cercle et noué en bas.",
+      es: "En un campo rojo, un pañuelo de plata dispuesto en círculo y anudado abajo.",
+      tr: "Kırmızı bir alanda, daire şeklinde düzenlenmiş i altına bağlanmış gümüş bir bez."
+    }
+  }
 ];
 
 let aktywnyJezyk = 'pl';
 
-function zmienJezyk(kodJezyka) {
-  aktywnyJezyk = kodJezyka;
-  const dane = tlumaczenia[kodJezyka]; // Pobranie paczki językowej
-  
-  if (!dane) return; // Zabezpieczenie przed błędem
-
-  // Podmiana tekstów
-  document.getElementById('tytul').innerText = dane.tytul;
-  document.getElementById('podtytul').innerText = dane.podtytul;
-  document.getElementById('szukaj').placeholder = dane.szukaj;
-  document.getElementById('przyciskSzukaj').innerText = dane.przycisk;
-  
-  // Kierunek tekstu
-  document.documentElement.lang = kodJezyka;
-  document.documentElement.dir = (kodJezyka === 'he' || kodJezyka === 'ar') ? 'rtl' : 'ltr';
-  
-  // Tytuł strony w przeglądarce
-  document.title = dane.tytul;
+function zmienJezyk(kod) {
+  aktywnyJezyk = kod;
+  const d = tlumaczenia[kod] || tlumaczenia['pl'];
+  document.getElementById('tytul').innerText = d.tytul;
+  document.getElementById('podtytul').innerText = d.podtytul;
+  document.getElementById('szukaj').placeholder = d.szukaj;
+  document.getElementById('przyciskSzukaj').innerText = d.przycisk;
+  document.documentElement.lang = kod;
+  document.documentElement.dir = (kod === 'he' || kod === 'ar') ? 'rtl' : 'ltr';
+  document.title = d.tytul;
+  if (document.getElementById('szukaj').value.trim() !== "") wykonajSzukanie();
 }
 
 function wykonajSzukanie() {
-  const poleSzukaj = document.getElementById('szukaj');
-  const fraza = poleSzukaj.value.toLowerCase().trim();
+  const fraza = document.getElementById('szukaj').value.toLowerCase().trim();
   const kontener = document.getElementById('wyniki');
-  
   kontener.innerHTML = '';
   if (fraza === '') return;
 
   const wyniki = bazaHerbow.filter(h =>
-    h.nazwisko.toLowerCase().includes(fraza) ||
-    h.herb.toLowerCase().includes(fraza)
+    h.nazwisko.toLowerCase().includes(fraza) || h.herb.toLowerCase().includes(fraza)
   );
 
-  const t = tlumaczenia[aktywnyJezyk];
-
+  const t = tlumaczenia[aktywnyJezyk] || tlumaczenia['pl'];
   if (wyniki.length === 0) {
-    kontener.innerHTML = `<p>${t.brak}: "${fraza}"</p>`;
+    kontener.innerHTML = `<p style="text-align:center;">${t.brak}: "${fraza}"</p>`;
     return;
   }
 
   wyniki.forEach(h => {
+    const opis = h.opisy[aktywnyJezyk] || h.opisy['pl'];
     kontener.innerHTML += `
-      <div class="herb">
-        <h3>${h.nazwisko} - ${h.herb}</h3>
-        <p>${h.opis}</p>
+      <div class="herb-card">
+        <img src="${h.obrazek}" alt="${h.herb}">
+        <div class="herb-info">
+          <h3>${h.nazwisko} - ${h.herb}</h3>
+          <p>${opis}</p>
+        </div>
       </div>
     `;
   });
 }
 
-// Obsługa Entera
 document.getElementById('szukaj').onkeyup = function(e) {
   if (e.key === "Enter") wykonajSzukanie();
 };
 
-// Startowa inicjalizacja
 zmienJezyk('pl');
 </script>
 
