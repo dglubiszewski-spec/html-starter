@@ -113,14 +113,22 @@
     let aktL = 'pl';
     const polskiHerbarz = { "lubiszewski": { h: "Wieniawa", i: "Szlachta wylegitymowana w Królestwie Polskim (Wydawnictwo DiG)" } };
 
-    function zmien(k) { 
-        aktL = k; const l = bazy[k] || bazy['pl'];
+        function zmien(k) { 
+        aktL = k; 
+        const l = bazy[k] || bazy['pl'];
         document.getElementById('t').innerText = l.t; 
         document.getElementById('s').innerText = l.s;
         document.getElementById('szukaj').placeholder = l.p; 
         document.getElementById('btn-szukaj').innerText = l.b;
+        
+        // TA LINIA DODAJE ?lang= DO ADRESU BEZ ODŚWIEŻANIA STRONY
+        const url = new URL(window.location);
+        url.searchParams.set('lang', k);
+        window.history.pushState({}, '', url);
+
         if(document.getElementById('wyniki').innerHTML !== "") herbarzStart();
     }
+
 
     function herbarzStart() {
         const nIn = document.getElementById('szukaj').value.trim().toLowerCase();
