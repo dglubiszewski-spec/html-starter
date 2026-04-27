@@ -23,7 +23,7 @@
         #szukaj { padding: 15px; width: 350px; border: 2px solid #4a3728; background: #fffef0; font-size: 18px; outline: none; }
         #btn-szukaj { padding: 15px 30px; background: #4a3728; color: white; border: none; cursor: pointer; font-size: 18px; font-weight: bold; }
 
-        #wyniki { margin-top: 30px; color: #4a3728; min-height: 100px; }
+        #wyniki { margin-top: 30px; color: #4a3728; min-height: 100px; font-weight: bold; }
         .herb-item img { max-width: 250px; border: 3px double #4a3728; background: white; padding: 15px; margin-top: 10px; box-shadow: 5px 5px 15px rgba(0,0,0,0.2); }
     </style>
 </head>
@@ -59,59 +59,59 @@
 
 <script>
     const bazy = {
-        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj'},
-        'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search'},
-        'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche'},
-        'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom...', b:'Chercher'},
-        'es': {t:'ARMORIAL', s:'Genealogía de familias nobles', p:'Apellido...', b:'Buscar'},
-        'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar'},
-        'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca'},
-        'se': {t:'VAPENBOK', s:'Adelsfamiljers genealogi', p:'Efternamn...', b:'Sök'},
-        'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Søk'},
-        'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפחה...', b:'חיפוש'},
-        'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث'},
-        'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara'},
-        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Прізвище...', b:'Пошук'}
+        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Szukanie...', n:'Nie znaleziono.'},
+        'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search', m:'Searching...', n:'Not found.'},
+        'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche', m:'Suche...', n:'Nicht gefunden.'},
+        'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom...', b:'Chercher', m:'Recherche...', n:'Pas trouvé.'},
+        'es': {t:'ARMORIAL', s:'Genealogía de familias nobles', p:'Apellido...', b:'Buscar', m:'Buscando...', n:'No encontrado.'},
+        'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar', m:'Procurando...', n:'Não encontrado.'},
+        'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca', m:'Ricerca...', n:'Non trovato.'},
+        'se': {t:'VAPENBOK', s:'Adelsfamiljers genealogi', p:'Efternamn...', b:'Sök', m:'Söker...', n:'Hittades inte.'},
+        'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Søk', m:'Søker...', n:'Ikke funnet.'},
+        'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפحة...', b:'חיפוש', m:'מחפש...', n:'לא נמצא.'},
+        'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث', m:'جارٍ البحث...', n:'لم يتم العثور.'},
+        'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara', m:'Aranıyor...', n:'Bulunamadı.'},
+        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхetських родів', p:'Прізвище...', b:'Пошук', m:'Пошук...', n:'Не знайдено.'}
     };
 
+    let aktualnyJezyk = 'pl';
+
     function zmien(k) {
+        aktualnyJezyk = k;
         const l = bazy[k];
         document.getElementById('t').innerText = l.t;
         document.getElementById('s').innerText = l.s;
         document.getElementById('szukaj').placeholder = l.p;
         document.getElementById('btn-szukaj').innerText = l.b;
-        window.history.pushState({}, '', '?lang=' + k);
     }
 
     async function szukajHerbu() {
         const q = document.getElementById('szukaj').value.trim();
         const res = document.getElementById('wyniki');
+        const l = bazy[aktualnyJezyk];
         if(!q) return;
-        res.innerHTML = "<em>Przeszukiwanie starych ksiąg...</em>";
 
+        res.innerHTML = `<em>${l.m}</em>`;
         const nazwa = q.charAt(0).toUpperCase() + q.slice(1);
-        // Próbujemy szukać bezpośrednio nazwy lub z dopiskiem "Herb"
-        const urls = [
-            `https://wikipedia.org{nazwa}&prop=pageimages&format=json&pithumbsize=500&origin=*`,
-            `https://wikipedia.org{nazwa}&prop=pageimages&format=json&pithumbsize=500&origin=*`
-        ];
 
-        for (let url of urls) {
-            try {
-                const r = await fetch(url);
-                const d = await r.json();
-                const p = d.query.pages;
-                const id = Object.keys(p)[0];
+        // API Wikipedii z poprawionymi parametrami
+        const api = `https://wikipedia.org{nazwa}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
 
-                if (id !== "-1" && p[id].thumbnail) {
-                    res.innerHTML = `<div class="herb-item"><h3>Herb ${nazwa}</h3><img src="${p[id].thumbnail.source}"></div>`;
-                    return; // Znaleziono, przerywamy pętlę
-                }
-            } catch (e) {
-                console.error("Błąd API");
+        try {
+            const r = await fetch(api);
+            if (!r.ok) throw new Error();
+            const d = await r.json();
+            const p = d.query.pages;
+            const id = Object.keys(p)[0];
+
+            if (id !== "-1" && p[id].thumbnail) {
+                res.innerHTML = `<div class="herb-item"><h3>${nazwa}</h3><img src="${p[id].thumbnail.source}"></div>`;
+            } else {
+                res.innerHTML = `${l.n} (${nazwa})`;
             }
+        } catch (e) {
+            res.innerHTML = "Błąd połączenia. Spróbuj wpisać nazwę herbu (np. Leliwa).";
         }
-        res.innerHTML = "Nie znaleziono herbu dla: " + nazwa;
     }
 </script>
 </body>
