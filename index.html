@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Herbarz</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-  .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; }
-    #szukaj { padding: 8px; width: 300px; margin: 20px 0; }
-    [dir="rtl"] { direction: rtl; }
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; transition: direction 0.3s; }
+    .lang-buttons { margin-bottom: 20px; }
+    .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; background: #f9f9f9; }
+    .lang-buttons button:hover { background: #e0e0e0; }
+    #szukaj { padding: 8px; width: 300px; margin: 20px 0; border: 1px solid #ccc; border-radius: 4px; }
+    
+    /* Obsługa języków czytanych od prawej do lewej (RTL) */
+    [dir="rtl"] #szukaj { text-align: right; }
   </style>
 </head>
 <body>
-  <h1 id="tytul">Herbarz</h1>
-  <p id="podtytul">Herby i genealogia</p>
-  
-  <input id="szukaj" type="text" placeholder="Szukaj herbu lub nazwiska...">
-  
+
   <div class="lang-buttons">
     <button onclick="zmienJezyk('pl')">PL</button>
     <button onclick="zmienJezyk('en')">EN</button>
@@ -29,7 +29,14 @@
     <button onclick="zmienJezyk('no')">NO</button>
     <button onclick="zmienJezyk('he')">HE</button>
     <button onclick="zmienJezyk('ar')">AR</button>
+    <button onclick="zmienJezyk('tr')">TR</button>
   </div>
+
+  <h1 id="tytul">Herbarz</h1>
+  <p id="podtytul">Herby i genealogia</p>
+  
+  <input id="szukaj" type="text" placeholder="Szukaj herbu lub nazwiska...">
+
 <script>
 function zmienJezyk(lang) {
   const t = {
@@ -43,15 +50,24 @@ function zmienJezyk(lang) {
     se: { tytul: "Vapenbok", podtytul: "Vapen och genealogi", szukaj: "Sök vapen eller efternamn..." },
     no: { tytul: "Våpenbok", podtytul: "Våpen og slektsforskning", szukaj: "Søk våpen eller etternavn..." },
     he: { tytul: "ספר השלטים", podtytul: "שלטי אצולה וגנאלוגיה", szukaj: "חפש שלט אצולה או שם משפחה..." },
-    ar: { tytul: "كتاب شعارات النبالة", podtytul: "شعارات النبالة وعلم الأنساب", szukaj: "ابحث عن شعار أو لقب..." }
-  }; // <-- TEN KAWAŁEK NAPRAWIA WSZYSTKO
+    ar: { tytul: "كتاب شعارات النبالة", podtytul: "شعارات النبالة وعلم الأنساب", szukaj: "ابحث عن شعار أو لقب..." },
+    tr: { tytul: "Armorial", podtytul: "Armalar ve Soybilim", szukaj: "Arma veya soyadı ara..." }
+  };
 
-  document.getElementById('tytul').textContent = t.tytul;
-  document.getElementById('podtytul').textContent = t.podtytul;
-  document.getElementById('szukaj').placeholder = t.szukaj;
+  // Pobieramy dane dla wybranego języka
+  const wybrane = t[lang];
+
+  // Aktualizujemy elementy na stronie
+  document.getElementById('tytul').textContent = wybrane.tytul;
+  document.getElementById('podtytul').textContent = wybrane.podtytul;
+  document.getElementById('szukaj').placeholder = wybrane.szukaj;
+  
+  // Ustawiamy atrybuty HTML (język i kierunek tekstu)
   document.documentElement.lang = lang;
-  document.documentElement.dir = (lang === 'he' || lang === 'ar')? 'rtl' : 'ltr';
-  document.title = t.tytul;
+  document.documentElement.dir = (lang === 'he' || lang === 'ar') ? 'rtl' : 'ltr';
+  
+  // Zmieniamy tytuł karty w przeglądarce
+  document.title = wybrane.tytul;
 }
 </script>
 
