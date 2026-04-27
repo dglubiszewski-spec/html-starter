@@ -127,35 +127,35 @@
         if(document.getElementById('wyniki').innerHTML !== "") herbarzStart();
     }
 
-        async function herbarzStart() {
-        // Ta linia czyści wpisane nazwisko (małe litery, usuwa polskie ogonki)
-        const nRaw = document.getElementById('szukaj').value.trim();
-        const nInput = nRaw.toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/g, "l");
+      async function herbarzStart() {
+    const nRaw = document.getElementById('szukaj').value.trim();
+    const nInput = nRaw.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/g, "l");
+    
+    const res = document.getElementById('wyniki');
+    const l = bazy[aktL] || bazy['pl'];
+    if(!nInput) return;
+
+    res.innerHTML = `<em>${l.m}</em>`;
+
+    try {
+        // Pobieranie bazy z pliku JSON
+        const response = await fetch('herbarz.json');
+        if (!response.ok) throw new Error();
+        const dane = await response.json();
         
-        const res = document.getElementById('wyniki');
-        const l = bazy[aktL] || bazy['pl'];
-        if(!nInput) return;
-
-        res.innerHTML = `<em>${l.m}</em>`;
-
-        try {
-            const response = await fetch('herbarz.json');
-            if (!response.ok) throw new Error();
-            const dane = await response.json();
-            
-            // Szukamy w bazie wyczyszczonego nazwiska
-            const wpis = dane[nInput];
-            
-            if(wpis) { 
-                pobierzZWikipedii(wpis.h, wpis.i); 
-            } else { 
-                res.innerHTML = nRaw.toUpperCase() + " - " + l.e; 
-            }
-        } catch (e) {
-            res.innerHTML = l.e; 
+        const wpis = dane[nInput];
+        if(wpis) { 
+            pobierzZWikipedii(wpis.h, wpis.i); 
+        } else { 
+            res.innerHTML = nRaw.toUpperCase() + " - " + l.e; 
         }
+    } catch (e) {
+        // TUTAJ POPRAWIŁEM: Bierze komunikat o błędzie z tablicy tłumaczeń (l.e)
+        res.innerHTML = `<span style="color:#4a3728">${l.e}</span>`; 
     }
+}
+ 
 
 
     async function pobierzZWikipedii(f, info) {
