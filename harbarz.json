@@ -1,22 +1,14 @@
 {
-  "lubiszewski": { "h": "Wieniawa", "i": "Ród z ziemi dobrzyńskiej. Nazwisko odmiejscowe od Lubiszewa. Wzmianki od XV w. Według Wydawnictwa DiG ród legitymowany w Królestwie Polskim w XIX w. Herb: czarna głowa żubra na złotym polu." },
-  "mickiewicz": { "h": "Poraj", "i": "Ród litewski, powiat nowogródzki. Wzmianki od przełomu XIV/XV w. Nazwisko od imienia Micko. Herb: biała róża w czerwonym polu. Wydał wieszcza Adama Mickiewicza." },
-  "potocki": { "h": "Pilawa", "i": "Magnateria z Potoka w ziemi krakowskiej. Wzmiankowani w 1236 r. Główne linie: Złota i Srebrna Pilawa. Herb: srebrny krzyż o siedmiu zakończeniach w błękitnym polu." },
-  "czartoryski": { "h": "Pogoń Litewska", "i": "Książęcy ród od Giedymina. Siedziba: Czartorysk na Wołyniu. Znani od XIV w. Twórcy stronnictwa 'Familia'. Herb: rycerz na koniu z mieczem i tarczą." },
-  "sapieha": { "h": "Lis", "i": "Ród litewski od bojarów smoleńskich. Linia od XV w. Nazwisko od starobiałoruskiego 'sapieć' (duma). Herb: biała strzała dwukrotnie przekrzyżowana w czerwonym polu." },
-  "radziwiłł": { "h": "Trąby", "i": "Najpotężniejszy ród Litwy od XV w. Pierwszy ród w Polsce z dziedzicznym tytułem książęcym. Herb: trzy czarne trąby w złotym polu. Siedziby w Nieświeżu i Ołyce." },
-  "sobieski": { "h": "Janina", "i": "Ród z Sobieszyna, znany od XV w. Wyniesiony do potęgi przez króla Jana III Sobieskiego. Herb: purpurowa tarcza wewnątrz większej tarczy. Sława po odsieczy wiedeńskiej." },
-  "zamoyski": { "h": "Jelita", "i": "Magnateria z Zamościa od XV w. Potęgę zbudował Jan Zamoyski. Herb: trzy złote włócznie skrzyżowane w czerwonym polu. Założyciele Ordynacji Zamojskiej." },
-  "lubomirski": { "h": "Drużyna", "i": "Ród z Lubomierza znany od XIV w. Piastowali urzędy marszałków i hetmanów. Herb: biała rzeka w czerwonym polu (krzywaśń). Fundatorzy zamku w Łańcucie." },
-  "małachowski": { "h": "Nałęcz", "i": "Ród senatorski z Małachowic od XIV w. Stanisław Małachowski był Marszałkiem Sejmu Wielkiego. Herb: biała chusta powiązana w koło w czerwonym polu." },
-  "tyszkiewicz": { "h": "Leliwa", "i": "Ród litewsko-ruski od Tyszki Kalenikowicza (XV w.). Otrzymali tytuł hrabiowski. Herb: złoty półksiężyc i gwiazda w błękitnym polu. Liczne pałace na Litwie i w Polsce." },
-  "branicki": { "h": "Korczak", "i": "Wielki ród z Branic. Jan Klemens Branicki zbudował potęgę rodu w XVIII w. Herb: trzy srebrne wręby w czerwonym polu. Siedziba w Białymstoku nazywana polskim Wersalem." },
-  "poniatowski": { "h": "Ciołek", "i": "Ród z Poniatowej od XV w. Wyniesiony przez Stanisława Poniatowskiego i króla Stanisława Augusta. Herb: czerwony byk (ciołek) w białym polu." },
-  "sklodowski": { "h": "Dołęga", "i": "Szlachta mazowiecka z ziemi ciechanowskiej. Nazwisko od wsi Skłody. Herb: podkowa ze strzałą i krzyżem. Wydał noblistkę Marię Skłodowską-Curie." },
-  "tarnowski": { "h": "Leliwa", "i": "Starodawny ród magnacki z Tarnowa. Znani od XIV w. Jan Tarnowski był wybitnym hetmanem. Herb: złoty półksiężyc i gwiazda. Założyciele miasta Tarnów." },
-  "koniecpolski": { "h": "Pobóg", "i": "Magnateria z Koniecpola. Potęgę zbudował hetman Stanisław Koniecpolski (XVII w.). Herb: srebrna podkowa z krzyżem w błękitnym polu. Siedziba w Koniecpolu." },
-  "dzieduszycki": { "h": "Sas", "i": "Ród ruski wylegitymowany w Galicji. Znani od XV w. Hrabiowie od 1775 r. Herb: półksiężyc z gwiazdami i strzałą w błękitnym polu. Wielcy kolekcjonerzy." },
-  "ostrogski": { "h": "Ostrogski", "i": "Najpotężniejszy ród ruski XV-XVII w. od Ruryka. Obrońcy prawosławia. Herb: półksiężyc i gwiazda pod bramą w błękitnym polu. Właściciele Ordynacji Ostrogskiej." },
-  "chodkiewicz": { "h": "Kościesza", "i": "Wielki ród litewski. Jan Karol Chodkiewicz był słynnym hetmanem, zwycięzcą spod Kircholmu. Herb: skrzyżowane strzały (Kościesza odmiana)." },
-  "pac": { "h": "Gozdawa", "i": "Znamienity ród litewski. Największe znaczenie w XVII w. 'Wart Pac pałaca'. Herb: podwójna srebrna lilia w czerwonym polu. Fundatorzy kościoła na Antokolu." }
+  "lubiszewski": {
+    "h": "Wieniawa",
+    "i": "Ród z ziemi dobrzyńskiej. Nazwisko odmiejscowe od Lubiszewa. Wzmianki od XV w. Według Wydawnictwa DiG ród legitymowany w Królestwie Polskim w XIX w. Herb Wieniawa to czarna głowa żubra na złotym polu."
+  },
+  "mickiewicz": {
+    "h": "Poraj",
+    "i": "Ród litewski, powiat nowogródzki. Wzmianki od przełomu XIV/XV w. Nazwisko od imienia Micko. Herb Poraj przedstawia pięciopłatkową białą różę w czerwonym polu."
+  },
+  "potocki": {
+    "h": "Pilawa",
+    "i": "Magnateria z Potoka w ziemi krakowskiej. Wzmiankowani w 1236 r. Główne linie: Złota i Srebrna Pilawa. Herb Pilawa to srebrny krzyż o siedmiu zakończeniach."
+  }
 }
