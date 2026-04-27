@@ -56,61 +56,71 @@
 </div>
 
 <script>
-    // 1. SYMULACJA POLSKIEGO HERBARZA (Tablica powiązań Nazwisko -> Herb)
-    // Tutaj możesz dodać tysiące nazwisk.
+    // TWOJA BAZA POWIĄZAŃ (Nazwisko -> Nazwa Herbu)
     const polskiHerbarz = {
-        "mickiewicz": "Poraj",
         "lubiszewski": "Wieniawa",
-        "kowalski": "leliwa",
+        "mickiewicz": "Poraj",
         "poniatowski": "Ciołek",
-        "czartoryski": "Pogoń Litewska",
+        "czartoryski": "Pogoń",
         "potocki": "Pilawa",
         "sapieha": "Lis",
-        "skłodowski": "Dołęga"
+        "skłodowski": "Dołęga",
+        "kopernik": "Herb własny"
     };
 
+    // PEŁNA BAZA 13 JĘZYKÓW
     const bazy = {
-        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Sprawdzanie w herbarzach...', n:'Nie znaleziono nazwiska w księgach.'},
-        'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search', m:'Checking armorials...', n:'Surname not found in books.'},
-        'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche', m:'Suche in Wappenrollen...', n:'Name nicht gefunden.'},
-        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Введіть прізвище...', b:'Пошук', m:'Пошук у гербовниках...', n:'Прізвище не знайдено.'}
-        // ... reszta języków analogicznie
+        'pl': {t:'HERBARZ', s:'Księgi i Genealogia Rodów Szlacheckich', p:'Wpisz nazwisko...', b:'Szukaj', m:'Sprawdzanie w herbarzach...', n:'Nie znaleziono nazwiska.'},
+        'en': {t:'ARMORIAL', s:'Genealogy of Noble Families', p:'Enter surname...', b:'Search', m:'Checking armorials...', n:'Surname not found.'},
+        'de': {t:'WAPPENROLLE', s:'Genealogie der Adelsfamilien', p:'Nachname...', b:'Suche', m:'Suche in Archiven...', n:'Name nicht gefunden.'},
+        'fr': {t:'ARMORIAL', s:'Généalogie des familles nobles', p:'Nom de famille...', b:'Chercher', m:'Recherche...', n:'Pas trouvé.'},
+        'es': {t:'ARMORIAL', s:'Genealogía de familias nobles', p:'Apellido...', b:'Buscar', m:'Buscando...', n:'No encontrado.'},
+        'pt': {t:'ARMORIAL', s:'Genealogia de famílias nobres', p:'Sobrenome...', b:'Buscar', m:'Procurando...', n:'Não encontrado.'},
+        'it': {t:'ARMORIALE', s:'Genealogia delle famiglie nobili', p:'Cognome...', b:'Cerca', m:'Ricerca...', n:'Non trovato.'},
+        'se': {t:'VAPENBOK', s:'Adelsfamiljers genealogi', p:'Efternamn...', b:'Sök', m:'Söker...', n:'Hittades inte.'},
+        'no': {t:'VÅPENBOK', s:'Adelsfamilienes genealogi', p:'Etternavn...', b:'Søk', m:'Söker...', n:'Ikke funnet.'},
+        'he': {t:'ספר הרלדיקה', s:'גנאלוגיה של משפחות אצולה', p:'שם משפחה...', b:'חיפוש', m:'מחפש...', n:'לא נמצא.'},
+        'ar': {t:'شعار النبالة', s:'أنساب العائلات النبيلة', p:'اسم العائلة...', b:'بحث', m:'جارٍ البحث...', n:'لم يتم العثور.'},
+        'tr': {t:'ARMORIAL', s:'Soylu Ailelerin Soybilimi', p:'Soyadı...', b:'Ara', m:'Aranıyor...', n:'Bulunamadı.'},
+        'ua': {t:'ГЕРБОВНИК', s:'Генеалогія шляхетських родів', p:'Прізвище...', b:'Пошук', m:'Поoshuk w herbowykach...', n:'Nie znajdeno.'}
     };
 
     let aktL = 'pl';
-    function zmien(k) { aktL = k; const l = bazy[k] || bazy['pl']; document.getElementById('t').innerText = l.t; document.getElementById('s').innerText = l.s; document.getElementById('szukaj').placeholder = l.p; document.getElementById('btn-szukaj').innerText = l.b; }
+    function zmien(k) { 
+        aktL = k; 
+        const l = bazy[k] || bazy['pl']; 
+        document.getElementById('t').innerText = l.t; 
+        document.getElementById('s').innerText = l.s; 
+        document.getElementById('szukaj').placeholder = l.p; 
+        document.getElementById('btn-szukaj').innerText = l.b; 
+    }
 
     function herbarzStart() {
         const nazwisko = document.getElementById('szukaj').value.trim().toLowerCase();
         const res = document.getElementById('wyniki');
         const l = bazy[aktL] || bazy['pl'];
+        if(!nazwisko) return;
 
         res.innerHTML = `<em>${l.m}</em>`;
-
-        // KROK 1: Sprawdź w "polskim herbarzu" (naszej tablicy)
         const nazwaHerbu = polskiHerbarz[nazwisko];
-
-        if (nazwaHerbu) {
-            // KROK 2: Jeśli znamy nazwę herbu, uderzamy do Wikipedii po obrazek
-            pobierzZWikipedii(nazwaHerbu);
-        } else {
-            // KROK 3: Jeśli nie ma w herbarzu, spróbujmy szukać bezpośrednio nazwiska (jako plan awaryjny)
-            pobierzZWikipedii(nazwisko);
-        }
+        pobierzZWikipedii(nazwaHerbu || nazwisko);
     }
 
     async function pobierzZWikipedii(fraza) {
         const res = document.getElementById('wyniki');
         const nazwa = fraza.charAt(0).toUpperCase() + fraza.slice(1);
-        const terminy = [`Herb_${nazwa}`, `${nazwa}_(herb_szlachecki)`, nazwa];
+        
+        // Szersze spektrum nazw dla Wikipedii
+        const terminy = [`Herb_${nazwa}`, `${nazwa}_(herb_szlachecki)`, nazwa, `POL_COA_${nazwa}`];
 
         for (let t of terminy) {
-            const api = `https://wikipedia.org{t}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
+            const api = `https://wikipedia.org{t}&prop=pageimages|images&format=json&pithumbsize=500&origin=*`;
             try {
                 const r = await fetch(api);
                 const d = await r.json();
                 const p = d.query.pages;
                 const id = Object.keys(p);
+                
                 if (id !== "-1" && p[id].thumbnail) {
                     res.innerHTML = `<div class="herb-item"><h3>Herb ${nazwa}</h3><img src="${p[id].thumbnail.source}"></div>`;
                     return;
