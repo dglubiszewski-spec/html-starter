@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Herbarz</title>
-  <link rel="stylesheet" href="styles.css">
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-    .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; }
+  .lang-buttons button { margin: 2px; padding: 5px 10px; cursor: pointer; }
     #szukaj { padding: 8px; width: 300px; margin: 20px 0; }
     [dir="rtl"] { direction: rtl; }
   </style>
@@ -31,11 +30,6 @@
     <button onclick="zmienJezyk('he')">HE</button>
     <button onclick="zmienJezyk('ar')">AR</button>
   </div>
-
-  <div id="wyniki">
-    <!-- Tu później wlecą herby -->
-  </div>
-
 <script>
 function zmienJezyk(lang) {
   const t = {
@@ -56,7 +50,7 @@ function zmienJezyk(lang) {
   document.getElementById('podtytul').textContent = t.podtytul;
   document.getElementById('szukaj').placeholder = t.szukaj;
   document.documentElement.lang = lang;
-  document.documentElement.dir = (lang === 'he' || lang === 'ar') ? 'rtl' : 'ltr';
+  document.documentElement.dir = (lang === 'he' || lang === 'ar')? 'rtl' : 'ltr';
   document.title = t.tytul;
 }
 </script>
