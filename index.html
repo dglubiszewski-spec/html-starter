@@ -2,112 +2,84 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Herbarz Szlachecki - herbarz.com</title>
     <style>
-        body { background-color: #b59a6d; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: serif; }
-        
-        /* Styl ozdobnej karty */
-        .karta {
-            background-color: #f3e5ab;
-            padding: 50px;
-            border: 2px solid #4a3728;
-            box-shadow: 10px 10px 20px rgba(0,0,0,0.3);
-            text-align: center;
-            position: relative;
-            min-width: 600px;
-            /* Tutaj można by dodać obrazek postrzępionych brzegów w border-image */
-        }
-
-        h1 { color: #4a3728; font-size: 60px; margin: 0; text-transform: uppercase; }
-        .subtitle { font-style: italic; color: #4a3728; margin-bottom: 30px; }
-
-        /* Poprawiony kontener na 11 flag */
+        /* Swobodne układanie flag */
         .lang-buttons {
-            margin: 20px auto;
             display: flex;
             justify-content: center;
+            flex-wrap: wrap; /* To pozwala flagom przechodzić do nowej linii */
             gap: 10px;
-            max-width: 500px;
-            flex-wrap: wrap;
+            margin: 20px auto;
+            max-width: 600px;
         }
-
-        .lang-buttons button {
-            background: none;
-            border: 1px solid #4a3728;
-            border-radius: 3px;
+        .lang-buttons img {
+            width: 40px;
+            height: auto;
             cursor: pointer;
-            font-size: 24px;
-            padding: 5px;
+            border: 1px solid #ccc;
             transition: transform 0.2s;
         }
+        .lang-buttons img:hover { transform: scale(1.1); }
 
-        .lang-buttons button:hover {
-            transform: scale(1.2);
-            background-color: rgba(74, 55, 40, 0.1);
-        }
-
-        /* Styl wyszukiwarki */
-        .search-box {
+        /* Kontener na herby */
+        #wyniki {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            margin-top: 20px;
+            gap: 20px;
+            margin-top: 30px;
         }
-
-        #szukaj {
-            padding: 15px;
-            width: 350px;
-            border: 2px solid #4a3728;
-            background: #fffef0;
-            font-size: 18px;
-        }
-
-        #przyciskSzukaj {
-            padding: 15px 30px;
-            background-color: #4a3728;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 18px;
-        }
+        .herb-item { text-align: center; width: 150px; }
+        .herb-item img { width: 100%; height: auto; border: 1px solid #4a3728; }
     </style>
 </head>
 <body>
 
-<div class="karta">
-    <h1>HERBARZ</h1>
-    <div class="subtitle">Księgi i Genealogia Rodów Szlacheckich</div>
-
-    <!-- Tutaj są Twoje przyciski - teraz jako 11 flag -->
     <div class="lang-buttons">
-        <button onclick="zmienJezyk('pl')" title="Polski">🇵🇱</button>
-        <button onclick="zmienJezyk('en')" title="English">🇬🇧</button>
-        <button onclick="zmienJezyk('de')" title="Deutsch">🇩🇪</button>
-        <button onclick="zmienJezyk('fr')" title="Français">🇫🇷</button>
-        <button onclick="zmienJezyk('es')" title="Español">🇪🇸</button>
-        <button onclick="zmienJezyk('it')" title="Italiano">🇮🇹</button>
-        <button onclick="zmienJezyk('ru')" title="Русский">🇷🇺</button>
-        <button onclick="zmienJezyk('ua')" title="Українська">🇺🇦</button>
-        <button onclick="zmienJezyk('lt')" title="Lietuvių">🇱🇹</button>
-        <button onclick="zmienJezyk('se')" title="Svenska">🇸🇪</button>
-        <button onclick="zmienJezyk('tr')" title="Türkçe">🇹🇷</button>
+        <img src="https://flagcdn.com" onclick="zmienJezyk('pl')" alt="PL">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('en')" alt="EN">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('de')" alt="DE">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('fr')" alt="FR">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('es')" alt="ES">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('pt')" alt="PT">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('it')" alt="IT">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('se')" alt="SE">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('no')" alt="NO">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('he')" alt="HE">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('ar')" alt="AR">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('tr')" alt="TR">
+        <img src="https://flagcdn.com" onclick="zmienJezyk('ua')" alt="UA">
     </div>
 
-    <div class="search-box">
-        <input id="szukaj" type="text" placeholder="Wpisz nazwisko...">
-        <button id="przyciskSzukaj" onclick="wykonajSzukanie()">Szukaj</button>
+    <div id="wyniki">
+        <!-- Tutaj skrypt wstawi herby -->
     </div>
-</div>
 
-<script>
-    function zmienJezyk(kod) {
-        console.log("Wybrano język: " + kod);
-        // Logika zmiany języka
-    }
-    function wykonajSzukanie() {
-        // Logika wyszukiwania
-    }
-</script>
+    <script>
+        // SYSTEM TŁUMACZEŃ: Działa na zasadzie przeładowania strony z parametrem ?lang=
+        function zmienJezyk(kod) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', kod);
+            window.location.href = url.toString(); 
+        }
 
+        // DLACZEGO NIE MA HERBÓW: Skrypt musi znać folder, w którym je trzymasz.
+        // Zakładam, że herby są w folderze /img/herby/ i nazywają się tak jak nazwisko.
+        function wyswietlHerby(dane) {
+            const kontener = document.getElementById('wyniki');
+            kontener.innerHTML = ''; // Czyścimy poprzednie wyniki
+
+            dane.forEach(herb => {
+                const div = document.createElement('div');
+                div.className = 'herb-item';
+                // TUTAJ POPRAWIŁEM ŚCIEŻKĘ DO OBRAZKA:
+                div.innerHTML = `
+                    <img src="img/herby/${herb.plik}.jpg" onerror="this.src='img/brak_herbu.jpg'" alt="${herb.nazwa}">
+                    <p>${herb.nazwa}</p>
+                `;
+                kontener.appendChild(div);
+            });
+        }
+    </script>
 </body>
 </html>
